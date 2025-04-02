@@ -23,12 +23,9 @@ class Document extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function getPathAttribute($value)
+    
+    public function getPathIdAttribute(?string $value): ?string
     {
-        return asset('storage/' . $value);
-    }
-    public function getNameAttribute($value)
-    {
-        return $value;
+        return $value ? asset('storage/' . $value) : null;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CodeRequest;
 use App\Http\Requests\DocumentRequest;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\RecurveRequest;
 use App\Http\Requests\RegisterRequest;
@@ -45,6 +46,7 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
+        $user->load('document');
         if (!$user) {
             return response()->json([
                 'success' => false,
@@ -66,15 +68,38 @@ class AuthController extends Controller
             ], 401);
         }
         // uploda de imagem
+        $path = $user->path_photo;
         if ($request->hasFile('path_photo')) {
             $path = $request->file('path_photo')->store('photo', 'public');
-            $user->path_photo = $path;
         }
-        $user->update($request->validated());
-
+        $user->update(array_merge($request->validated(), ['path_photo' => $path ]));
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
+            'data' => $user
+        ]);
+    }
+    public function password(PasswordRequest $request)
+    {
+        $request->validated();
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated'
+            ], 401);
+        }
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Current password is incorrect'
+            ], 422);
+        }
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully',
             'data' => $user,
         ]);
     }
@@ -170,6 +195,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
+                'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
@@ -178,6 +204,7 @@ class AuthController extends Controller
         $code = $this->generateCode($request->email, 'recurve');
 
         return response()->json([
+            'success' => true,
             'message' => 'Password reset link sent',
             "url" => route('reset', ['code' => $code]),
         ]);
@@ -186,6 +213,7 @@ class AuthController extends Controller
     public function reset(ResetRequest $request)
     {
         $code = Cache::get("code.$request->email-recurve");
+        
         if ($code != request('code')) {
             return response()->json([
                 'success' => false,
@@ -197,6 +225,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
+                'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
@@ -204,8 +233,15 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // delete o código do cache
+        Cache::forget("code.$request->email-recurve");
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Password reset successfully'
+            'success' => true,
+            'message' => 'Password reset successfully',
+            'data' => $user,
+            'token' => $token
         ]);
     }
 
