@@ -22,11 +22,7 @@ class RecurveRequest extends FormRequest
     public function rules(): array
     {
         return [
-<<<<<<< HEAD
-            'email' => 'required|email',
-=======
             'email' => 'required|email|exists:users,email',
->>>>>>> master
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

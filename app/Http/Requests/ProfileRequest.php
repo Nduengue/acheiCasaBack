@@ -22,14 +22,9 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-<<<<<<< HEAD
-            "name" => "required|string|max:255",
-            "phone_number" => "required|string|max:255",
-=======
             "first_name" => "required|string|max:255",
             "last_name" => "required|string|max:255",
             "phone_number" => "required|unique:users,phone_number|string|max:255",
->>>>>>> master
             "email" => "required|email|unique:users,email|max:255",
             "birthdate" => "required|date",
             "gender" => "required|in:M,F",
