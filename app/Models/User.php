@@ -32,7 +32,19 @@ class User extends Authenticatable
         'path_photo',
         'deleted',
     ];
+<<<<<<< HEAD
 
+=======
+    /**
+     * Accessor to get the full URL for the path_photo attribute.
+     *
+     * @return string|null
+     */
+    public function getPathPhotoAttribute(?string $value): ?string
+    {
+        return $value ? asset('storage/' . $value) : null;
+    }
+>>>>>>> master
 
     /**
      * The attributes that should be hidden for serialization.

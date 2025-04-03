@@ -23,6 +23,7 @@ class Document extends Model
     {
         return $this->belongsTo(User::class);
     }
+<<<<<<< HEAD
     public function getPathAttribute($value)
     {
         return asset('storage/' . $value);
@@ -30,5 +31,11 @@ class Document extends Model
     public function getNameAttribute($value)
     {
         return $value;
+=======
+    
+    public function getPathIdAttribute(?string $value): ?string
+    {
+        return $value ? asset('storage/' . $value) : null;
+>>>>>>> master
     }
 }
