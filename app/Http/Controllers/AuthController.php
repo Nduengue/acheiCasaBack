@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use PhpParser\Comment\Doc;
@@ -180,6 +181,8 @@ class AuthController extends Controller
         // Gera um código aleatório e armazena em cache
         $code = random_int(100000, 999999);
         Cache::put("code.$email-$type", $code, now()->addMinutes(10));
+        // Envia o código por e-mail
+        Mail::to($email)->send(new \App\Mail\CodeMail($code));
         // Aqui você pode implementar a lógica para enviar o código por e-mail
         return $code;
     }
