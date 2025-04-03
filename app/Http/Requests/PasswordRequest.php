@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileRequest extends FormRequest
+class PasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,8 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-<<<<<<< HEAD
-            "name" => "required|string|max:255",
-            "phone_number" => "required|string|max:255",
-=======
-            "first_name" => "required|string|max:255",
-            "last_name" => "required|string|max:255",
-            "phone_number" => "required|unique:users,phone_number|string|max:255",
->>>>>>> master
-            "email" => "required|email|unique:users,email|max:255",
-            "birthdate" => "required|date",
-            "gender" => "required|in:M,F",
-            "path_photo" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "current_password"=> "required|string",
+            "password"=> "required|string|confirmed",
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

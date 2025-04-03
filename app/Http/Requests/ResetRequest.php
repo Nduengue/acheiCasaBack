@@ -26,4 +26,17 @@ class ResetRequest extends FormRequest
             'password' => 'required|min:6|confirmed'
         ];
     }
+<<<<<<< HEAD
+=======
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(
+            response()->json([
+                'success' => false,
+                'message' => 'Erro de validação!',
+                'errors' => $validator->errors()
+            ], 422)
+        );
+    }
+>>>>>>> master
 }
