@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use PhpParser\Comment\Doc;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {  
@@ -301,6 +302,11 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
+	// Garantir que a sessão seja iniciada
+    	if (!Session::isStarted()) {
+            Session::start();
+    	}
+
         return Socialite::driver("google")->redirect();
     }
 
