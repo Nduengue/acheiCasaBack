@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CodeRequest;
-use App\Http\Requests\DocumentRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\RecurveRequest;
 use App\Http\Requests\RegisterRequest;

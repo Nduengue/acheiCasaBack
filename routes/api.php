@@ -27,3 +27,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, "me"])->name("me");
     Route::post('profile', [AuthController::class, "profile"])->name("profile");
 });
+//         $user->update($request->validated());
