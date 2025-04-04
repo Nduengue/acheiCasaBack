@@ -28,7 +28,7 @@ class CodeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Code Mail',
+            subject: 'Achei Casa - Código de verificação',
         );
     }
 
