@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, "me"])->name("me");
     Route::post('profile', [AuthController::class, "profile"])->name("profile");
 });
+
+//webhook
+Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);
 //         $user->update($request->validated());

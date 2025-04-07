@@ -113,11 +113,13 @@ class AuthController extends Controller
                 "name" => "back",
             ]
         ]);
+        $user->load('document');
         return response()->json([
             'success' => true,
             'message' => 'User registered successfully',
             'data' => $user,
-        ]);
+            'token' => $user->createToken('auth_token')->plainTextToken,
+        ]);;
     }
    
     /**
@@ -158,7 +160,6 @@ class AuthController extends Controller
         Cache::put("code.$email-$type", $code, now()->addMinutes(10));
         // Envia o código por e-mail
         Mail::to($email)->send(new \App\Mail\CodeMail($code));
-     
         // Retorna o código gerado
         return $code;
     }
@@ -209,7 +210,8 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json([
-            'message' => 'Password reset successfully'
+            'message' => 'Password reset successfully',
+            'data' => $user,
         ]);
     }
 
@@ -314,7 +316,7 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function logout(Request $request)
+    public function logout()
     {
         $user = Auth::user();
         if ($user) {
@@ -331,5 +333,3 @@ class AuthController extends Controller
     
     
 }
-
-//     /**
