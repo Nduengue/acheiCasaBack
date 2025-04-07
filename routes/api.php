@@ -31,4 +31,3 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //webhook
 Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);
-//         $user->update($request->validated());
