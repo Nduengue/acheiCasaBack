@@ -23,7 +23,6 @@ return new class extends Migration
         */
         Schema::create('offer_options', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
             $table->string('icon')->nullable();
             $table->string('title');
             $table->boolean('deleted')->default(false);

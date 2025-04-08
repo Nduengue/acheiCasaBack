@@ -25,6 +25,7 @@ class Property extends Model
         'room',
         'bathroom',
         'price',
+        'deleted',
     ];
     protected $casts = [
         'location' => 'array',
@@ -36,5 +37,17 @@ class Property extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function offer()
+    {
+        return $this->hasMany(Offer::class);
+    }
+    public function accommodationPhoto()
+    {
+        return $this->hasMany(AccommodationPhoto::class);
+    }
+    public function getPhotoPathAttribute($value)
+    {
+        return asset('storage/' . $value);
     }
 }

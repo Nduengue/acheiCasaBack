@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,12 @@ Route::get('/auth/google/callback',[AuthController::class,"googleCallback"])->na
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, "me"])->name("me");
     Route::post('profile', [AuthController::class, "profile"])->name("profile");
+    /**
+     * * Property
+     * * @see \App\Http\Controllers\PropertyController
+     */
+    Route::apiResource('property',PropertyController::class)
+            ->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 
 //webhook

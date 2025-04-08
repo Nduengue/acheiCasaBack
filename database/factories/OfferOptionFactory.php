@@ -17,7 +17,9 @@ class OfferOptionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'icon' => $this->faker->imageUrl(),
+            'title' => $this->faker->word(),
+            'deleted' => false,
         ];
     }
 }
