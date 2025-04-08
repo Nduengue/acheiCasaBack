@@ -39,6 +39,7 @@ class StorePropertyRequest extends FormRequest
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',
+            'contact'=>'required',
             'photo'=> 'required|array',
             'photo.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             /**
@@ -63,6 +64,11 @@ class StorePropertyRequest extends FormRequest
                 'offer' => json_decode($this->offer, true),
             ]);
         }
+        if ($this->has('contact') && is_string($this->contact)) {
+            $this->merge([
+                'contact' => json_decode($this->contact, true),
+            ]);
+        }
     }
     
     protected function prepareForValidation()
@@ -79,6 +85,11 @@ class StorePropertyRequest extends FormRequest
         if ($this->has('offer') && is_string($this->offer)) {
             $this->merge([
                 'offer' => json_decode($this->offer, true),
+            ]);
+        }
+        if ($this->has('contact') && is_string($this->contact)) {
+            $this->merge([
+                'contact' => json_decode($this->contact, true),
             ]);
         }
     }

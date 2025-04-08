@@ -34,6 +34,12 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::apiResource('property',PropertyController::class)
             ->only(['index', 'store', 'show', 'update', 'destroy']);
+    /**
+     * Property
+     * @see \App\Http\Controllers\PropertyController
+     * @see \App\Http\Controllers\PropertyController::nearby()
+     */
+    Route::get('nearby', [PropertyController::class, 'nearby'])->name('property.nearby');
 });
 
 //webhook

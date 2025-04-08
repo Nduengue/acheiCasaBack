@@ -38,32 +38,41 @@ class PropertyController extends Controller
      */
     public function nearby(Request $request)
     {
-        $latitude = $request->input('latitude');
-        $longitude = $request->input('longitude');
-        $radius = $request->input('radius', 10);
-        $province = $request->query('province',"luanda");
+        $latitude = $request->query('latitude');
+        $longitude = $request->query('longitude');
+        $radius = $request->query('radius', 10);
+        
         if (!$latitude || !$longitude) {
             return response()->json(['error' => 'Latitude and longitude are required'], 422);
         }
 
-        $properties = Property::where('deleted', false)
-        ->orWhere('province', $province)
-        ->get()
-        ->filter(function ($property) use ($latitude, $longitude, $radius) {
+        $properties = Property::where('deleted', false)->get()->filter(function ($property) use ($latitude, $longitude, $radius) {
             $location = $property->location; // Já é um array
-            $distance = $this->haversine($latitude, $longitude, $location['lat'], $location['log']);
+            $distance = $this->haversine($latitude, $longitude, $location['lat'], $location['lng']);
             return $distance <= $radius;
         });
 
-        foreach ($properties as $property) {
-            $property->users;
-            $property->proposal;
-            $property->ratings;
-        }
+        $properties->each(function ($property) {
+            $property->accommodationPhoto;
+            $property->offer;
+        });
 
         return response()->json([
             "data"=>$properties
         ]);
+    }
+    private function haversine($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371; // Raio da Terra em quilômetros
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
     }
 
     /**
@@ -77,14 +86,20 @@ class PropertyController extends Controller
         if ($request->has('offer')) {
             $property->offer()->createMany($request->input('offer'));
         }
+        // Attach the accommodation photos if they exist
         foreach ($request->file('photo') as $image) {
             $path = $image->store('uploads', 'public');
             $property->accommodationPhoto()->create([
                 'photo_path' => $path
             ]);
         }
+        // Attach the contact if it exists
+        if ($request->has('contact')) {
+            $property->contact()->createMany($request->input('contact'));
+        }
         $property->load('offer');
         $property->load('accommodationPhoto');
+        $property->load('contact');
         return response()->json([
             'success' => true,
             'data' => $property,

@@ -25,7 +25,6 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('agency_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('property_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['W', 'C', 'M'])->comment('W - whatsapp C - contacto M - Mail');
             $table->string('value')->comment('número de telefone');

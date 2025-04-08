@@ -46,6 +46,10 @@ class Property extends Model
     {
         return $this->hasMany(AccommodationPhoto::class);
     }
+    public function contact()
+    {
+        return $this->hasMany(Contact::class);
+    }
     public function getPhotoPathAttribute($value)
     {
         return asset('storage/' . $value);
