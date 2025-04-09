@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::get('nearby', [PropertyController::class, 'nearby'])->name('property.nearby');
 });
+Route::get('base', [PropertyController::class, 'base'])->name('property.all');
 
 //webhook
 Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);

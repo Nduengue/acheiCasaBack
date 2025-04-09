@@ -36,6 +36,7 @@ return new class extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('type')->nullable()->comment('Casa, Apartamento, Armazem, Loja, Terreno, ...');
             $table->string('status')->nullable()->comment('usado,novo etc');
@@ -51,6 +52,7 @@ return new class extends Migration
             $table->integer('bathroom')->nullable();
             $table->decimal('price', 10, 2);
             $table->boolean('deleted')->default(false);
+            $table->boolean('announces')->default(false)->comment('Anunciar?');
             $table->timestamps();
         });
     }

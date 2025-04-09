@@ -26,6 +26,7 @@ class StorePropertyRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
+            'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
             'type' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
