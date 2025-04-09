@@ -46,7 +46,7 @@ class PropertyController extends Controller
         if (request()->query('category_id') == null) {
         $properties = Property::where('deleted', false)
             ->where('province', request()->query('province', 'Luanda'))
-            ->where('announces', true)
+            ->orWhere('announces', true)
             ->orderBy('announces', 'desc')
             ->paginate(8, ['*'], 'page', $page);
         }

@@ -29,6 +29,9 @@ class Property extends Model
         'announces',
         'deleted',
     ];
+    protected $hidden = [
+        'announces',
+    ];
     protected $casts = [
         'location' => 'array',
         'announces' => 'boolean',
