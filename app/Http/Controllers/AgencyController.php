@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agency;
 use App\Http\Requests\StoreAgencyRequest;
 use App\Http\Requests\UpdateAgencyRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AgencyController extends Controller
 {
@@ -13,15 +14,15 @@ class AgencyController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $agency =   Agency::where("deleted",false)
+                    ->where("user_id",Auth::id())
+                    ->get();
+        
+        $data = [
+            "data"=>$agency
+        ];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($data);
     }
 
     /**
@@ -29,7 +30,19 @@ class AgencyController extends Controller
      */
     public function store(StoreAgencyRequest $request)
     {
-        //
+        $user = Auth::user();
+        // uploda de imagem
+        $path = null;
+        if ($request->hasFile('path_photo')) {
+            $path = $request->file('path_photo')->store('photo', 'public');
+        }
+        $agency = $user->agencies()->create(array_merge($request->validated(), ['path_photo' => $path ]));
+        $agency = Agency::create(array_merge($request->validated(), ['path_photo' => $path ]));
+        return response()->json([
+            'success' => true,
+            'message' => 'Agency store successfully',
+            'data' => $agency
+        ]);
     }
 
     /**
@@ -37,15 +50,11 @@ class AgencyController extends Controller
      */
     public function show(Agency $agency)
     {
-        //
-    }
+        $data = [
+            "data"=>$agency
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Agency $agency)
-    {
-        //
+        return response()->json($data);
     }
 
     /**
@@ -53,7 +62,19 @@ class AgencyController extends Controller
      */
     public function update(UpdateAgencyRequest $request, Agency $agency)
     {
-        //
+        // uploda de imagem
+        $path = $agency->path_photo;
+        if ($request->hasFile('path_photo')) {
+            $path = $request->file('path_photo')->store('photo', 'public');
+        }
+        
+        $agency->update(array_merge($request->validated(), ['path_photo' => $path ]));
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Agency store successfully',
+            'data' => $agency
+        ]);
     }
 
     /**
@@ -61,6 +82,10 @@ class AgencyController extends Controller
      */
     public function destroy(Agency $agency)
     {
-        //
+        $agency->update(['deleted' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Agency deleted successfully',
+        ]);
     }
 }

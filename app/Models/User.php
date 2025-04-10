@@ -73,5 +73,15 @@ class User extends Authenticatable
         return $this->hasMany(Document::class);
         
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Agency>
+     */
+    public function agency(){
+
+        return $this->hasMany(Agency::class);
+        
+    }
+    
 
 }
