@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Contact extends Model
 {
@@ -11,7 +12,6 @@ class Contact extends Model
     use HasFactory;
     protected $fillable = [
         'agency_id',
-        'user_id',
         'property_id',
         'type',
         'value'
@@ -27,4 +27,21 @@ class Contact extends Model
         'created_at',
         'updated_at'
     ];
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
+    // add id de user
+    public function getUserIdAttribute($value)
+    {
+        return Auth::id();
+    }
 }

@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*
-        Modelo
-        Table offer_option {
+        /* Table categories {
             id serial [primary key]
-            property_id int [ref: > property.id]
-            icon varchar [null]
+            icon varchar
             title varchar
             deleted bool [default: false]
-        }
-        */
-        Schema::create('offer_options', function (Blueprint $table) {
+          } */
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('icon')->nullable();
             $table->string('title');
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('offer_options');
+        Schema::dropIfExists('categories');
     }
 };

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CodeRequest;
-use App\Http\Requests\DocumentRequest;
-use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\RecurveRequest;
 use App\Http\Requests\RegisterRequest;
@@ -18,7 +16,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
-use PhpParser\Comment\Doc;
 
 class AuthController extends Controller
 {  
@@ -47,7 +44,6 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
-        $user->load('document');
         if (!$user) {
             return response()->json([
                 'success' => false,
@@ -69,38 +65,17 @@ class AuthController extends Controller
             ], 401);
         }
         // uploda de imagem
-        $path = $user->path_photo;
         if ($request->hasFile('path_photo')) {
             $path = $request->file('path_photo')->store('photo', 'public');
+            $user->path_photo = $path;
         }
-        $user->update(array_merge($request->validated(), ['path_photo' => $path ]));
+        $user->update(array_merge($request->validated(), [
+            'path_photo' => $path ?? $user->path_photo,
+        ]));
+
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
-            'data' => $user
-        ]);
-    }
-    public function password(PasswordRequest $request)
-    {
-        $request->validated();
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not authenticated'
-            ], 401);
-        }
-        if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Current password is incorrect'
-            ], 422);
-        }
-        $user->password = Hash::make($request->password);
-        $user->save();
-        return response()->json([
-            'success' => true,
-            'message' => 'Password updated successfully',
             'data' => $user,
         ]);
     }
@@ -138,11 +113,13 @@ class AuthController extends Controller
                 "name" => "back",
             ]
         ]);
+        $user->load('document');
         return response()->json([
             'success' => true,
             'message' => 'User registered successfully',
             'data' => $user,
-        ]);
+            'token' => $user->createToken('auth_token')->plainTextToken,
+        ]);;
     }
    
     /**
@@ -183,7 +160,7 @@ class AuthController extends Controller
         Cache::put("code.$email-$type", $code, now()->addMinutes(10));
         // Envia o código por e-mail
         Mail::to($email)->send(new \App\Mail\CodeMail($code));
-        // Aqui você pode implementar a lógica para enviar o código por e-mail
+        // Retorna o código gerado
         return $code;
     }
 
@@ -198,7 +175,6 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
@@ -207,7 +183,6 @@ class AuthController extends Controller
         $code = $this->generateCode($request->email, 'recurve');
 
         return response()->json([
-            'success' => true,
             'message' => 'Password reset link sent',
             "url" => route('reset', ['code' => $code]),
         ]);
@@ -216,7 +191,6 @@ class AuthController extends Controller
     public function reset(ResetRequest $request)
     {
         $code = Cache::get("code.$request->email-recurve");
-        
         if ($code != request('code')) {
             return response()->json([
                 'success' => false,
@@ -228,7 +202,6 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
@@ -236,15 +209,9 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // delete o código do cache
-        Cache::forget("code.$request->email-recurve");
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
-            'success' => true,
             'message' => 'Password reset successfully',
             'data' => $user,
-            'token' => $token
         ]);
     }
 
@@ -304,7 +271,7 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
-        return Socialite::driver("google")->redirect();
+        return Socialite::driver("google")->redirect()->getTargetUrl();
     }
 
     /**
@@ -349,7 +316,7 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function logout(Request $request)
+    public function logout()
     {
         $user = Auth::user();
         if ($user) {

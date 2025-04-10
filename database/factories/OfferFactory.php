@@ -17,7 +17,9 @@ class OfferFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'property_id' => \App\Models\Property::factory(),
+            'offer_option_id' => \App\Models\OfferOption::factory(),
+            'deleted' => false,
         ];
     }
 }

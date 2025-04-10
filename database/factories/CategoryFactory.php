@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OfferOption>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class OfferOptionFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,9 @@ class OfferOptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'icon' => $this->faker->imageUrl(),
+            'icon' => $this->faker->word(),
             'title' => $this->faker->word(),
-            'deleted' => false,
+            'deleted' => $this->faker->boolean(),
         ];
     }
 }

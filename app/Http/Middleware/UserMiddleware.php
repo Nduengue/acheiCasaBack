@@ -16,10 +16,6 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if the user is authenticated
-       /*  if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        } */
         return $next($request);
     }
 }
