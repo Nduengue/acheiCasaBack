@@ -20,7 +20,7 @@ class NotificationController extends Controller
     // Enviar uma notificação para um usuário específico
     public function store(NoticeRequest $request)
     {
-        $user = User::find($request->user_id);
+        /* $user = User::find($request->user_id);
 
         // Verifica se o usuário existe antes de enviar a notificação
         if (!$user)
@@ -39,7 +39,7 @@ class NotificationController extends Controller
             "success" =>true,
             'message' => 'Notificação enviada com sucesso',
             "data" =>$user
-        ]);
+        ]); */
     }
 
     // Marcar uma notificação como lida

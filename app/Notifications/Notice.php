@@ -15,15 +15,20 @@ class Notice extends Notification
     protected $message;
     protected $url;
     protected $type;
-
-    public function __construct($title, $message, $url, $type)
+    protected $method;
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct($title, $message, $url, $method = "GET", $type = "link")
     {
         $this->title = $title;
         $this->message = $message;
         $this->url = $url;
         $this->type = $type;
+        $this->method = $method;
     }
-
     public function via()
     {
         return ['database'];
@@ -35,6 +40,7 @@ class Notice extends Notification
             'title' => $this->title,
             'message' => $this->message,
             'url' => $this->url,
+            'method' => $this->method,
             'type' => $this->type,
         ];
     }

@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreAgencyRequest extends FormRequest
+class UserToAgencyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,9 @@ class StoreAgencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" =>"required|string",
-            "code" =>"required|string|unique:agencies,code",
-            "email" =>"required|email",
-            "address" =>"required|string",
-            "phone" =>"required|string",
-            "path_photo" =>"nullable|image|mimes:png,jpg",
+          'user_id' => 'required|exists:users,id|unique:agency_users,user_id',
         ];
     }
-    
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(
@@ -43,4 +37,5 @@ class StoreAgencyRequest extends FormRequest
             ]
         ));
     }
+
 }

@@ -17,16 +17,24 @@ class Agency extends Model
         'email',
         'address',
         'phone',
+        'deleted',
     ];
     protected $casts = [
         'deleted' => 'boolean',
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function agencyUsers()
     {
         return $this->hasMany(AgencyUser::class);
+    }
+
+    public function getPathPhotoAttribute($value)
+    {
+        return asset('storage/' . $value);
     }
 }

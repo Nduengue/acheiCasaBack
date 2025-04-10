@@ -77,7 +77,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<Agency>
      */
-    public function agency(){
+    public function agencies(){
 
         return $this->hasMany(Agency::class);
         
