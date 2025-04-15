@@ -40,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\PropertyController::nearby()
      */
     Route::get('nearby', [PropertyController::class, 'nearby'])->name('property.nearby');
+    Route::resource("agency",AgencyController::class);
+
 });
 Route::get('base', [PropertyController::class, 'base'])->name('property.all');
 

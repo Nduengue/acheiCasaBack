@@ -29,4 +29,8 @@ class Agency extends Model
     {
         return $this->hasMany(AgencyUser::class);
     }
+    public function getPhotoPathAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
 }
