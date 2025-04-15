@@ -21,4 +21,39 @@ class OpenChat extends Model
         'created_at',
         'updated_at',
     ];
+    //Relations
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class, 'property_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'chat_id');
+    }
+
+    public function lastMessage()
+    {
+        return $this->hasOne(Message::class, 'chat_id')->latest();
+    }
+
+    public function unreadMessages()
+    {
+        return $this->hasMany(Message::class, 'chat_id')->where('read', false);
+    }
+
+    public function readMessages()
+    {
+        return $this->hasMany(Message::class, 'chat_id')->where('read', true);
+    }
+    
+    public function deletedMessages()
+    {
+        return $this->hasMany(Message::class, 'chat_id')->where('deleted', true);
+    }
 }

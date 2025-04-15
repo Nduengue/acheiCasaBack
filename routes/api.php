@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OpenChatController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
@@ -27,6 +29,12 @@ use Illuminate\Support\Facades\Route;
  Route::post('code', [AuthController::class, "code"])->name("code");
  Route::post('logout', [AuthController::class, "logout"])->name("logout");
  
+ Route::get("login", function (Request $request) {
+    return response()->json([
+        "success" => false,
+        "message" => "You need to be logged in to register interest",
+    ], 401);
+})->name("login");
  
   /**
   * * Auth * Facebook *
@@ -87,8 +95,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('search-user', [AgencyController::class, 'searchUser'])->name('agency.search');
     Route::post('addUserToAgency/{agency}', [AgencyController::class, 'addUserToAgency'])->name('agency.addUserToAgency');
     Route::get('listUserToAgency', [AgencyController::class, 'listUserToAgency'])->name('agency.listUserToAgency');
-
-
+    
+    
     /**
      * Notification
      * @see \App\Http\Controllers\NotificationController
@@ -98,8 +106,11 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::get('notification',[NotificationController::class,'index'])->name('notification.index');
     Route::get('notification/{id}',[NotificationController::class,'marcarComoLida'])->name('notification.lida');
-    /* Route::post('notification',[NotificationController::class,'store'])->name('notification.store'); */
-
+    
+    Route::post('interest/{property}', [OpenChatController::class, 'interest'])->name('openChat.interest');
+    Route::get('message', [OpenChatController::class, 'index'])->name('openChat.index');
+    Route::get('message/{chat}', [OpenChatController::class, 'show'])->name('openChat.show');
+    Route::post('message/{chat}', [OpenChatController::class, 'store'])->name('message.store');
 
 });
 
