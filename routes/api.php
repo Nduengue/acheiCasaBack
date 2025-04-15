@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-/**
+ /**
  * Auth
  * @see \App\Http\Controllers\AuthController
  * @see \App\Http\Controllers\AuthController::auth()
@@ -20,41 +20,32 @@ use Illuminate\Support\Facades\Route;
  * @see \App\Http\Controllers\AuthController::logout()
  */
 
-Route::post('auth', [AuthController::class, "auth"])->name("auth");
-Route::post('register', [AuthController::class, "register"]);
-Route::post('recurve', [AuthController::class, "recurve"])->name("recurve");
-Route::post('reset', [AuthController::class, "reset"])->name("reset");
-Route::post('code', [AuthController::class, "code"])->name("code");
-Route::post('logout', [AuthController::class, "logout"])->name("logout");
-
-
-/**
- * * Auth * Facebook *
- * @see \App\Http\Controllers\AuthController
- * @see \App\Http\Controllers\AuthController::facebookRedirect()
- * @see \App\Http\Controllers\AuthController::facebookCallback()
- */
-Route::get('/auth/facebook/redirect',[AuthController::class,"facebookRedirect"])->name("facebook.redirect");
-Route::get('/auth/facebook/callback',[AuthController::class,"facebookCallback"])->name("facebook.callback");
-
-/**
+ Route::post('auth', [AuthController::class, "auth"])->name("auth");
+ Route::post('register', [AuthController::class, "register"]);
+ Route::post('recurve', [AuthController::class, "recurve"])->name("recurve");
+ Route::post('reset', [AuthController::class, "reset"])->name("reset");
+ Route::post('code', [AuthController::class, "code"])->name("code");
+ Route::post('logout', [AuthController::class, "logout"])->name("logout");
+ 
+ 
+  /**
+  * * Auth * Facebook *
+  * @see \App\Http\Controllers\AuthController
+  * @see \App\Http\Controllers\AuthController::facebookRedirect()
+  * @see \App\Http\Controllers\AuthController::facebookCallback()
+  */
+ Route::get('/auth/facebook/redirect',[AuthController::class,"facebookRedirect"])->name("facebook.redirect");
+ Route::get('/auth/facebook/callback',[AuthController::class,"facebookCallback"])->name("facebook.callback");
+ 
+ /**
  * * Auth * Google *
  * @see \App\Http\Controllers\AuthController
  * @see \App\Http\Controllers\AuthController::googleRedirect()
  * @see \App\Http\Controllers\AuthController::googleCallback()
  */
-Route::get('/auth/google/redirect', [AuthController::class,"googleRedirect"])->name("google.redirect");
-Route::get('/auth/google/callback',[AuthController::class,"googleCallback"])->name("google.callback");
-
-
-
-/**
- * * Route * Public *
- * @see \App\Http\Controllers\PropertyController
- * @see \App\Http\Controllers\PropertyController::base()
- */
-Route::get('base', [PropertyController::class, 'base'])->name('property.all');
-Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);
+ Route::get('/auth/google/redirect', [AuthController::class,"googleRedirect"])->name("google.redirect");
+ Route::get('/auth/google/callback',[AuthController::class,"googleCallback"])->name("google.callback");
+ 
 
 
 // Routa Auth
@@ -66,7 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\AuthController::profile()
      */
     Route::get('me', [AuthController::class, "me"])->name("me");
-    Route::post('profile', [AuthController::class, "profile"])->name("profile");
+    Route::put('profile', [AuthController::class, "profile"])->name("profile");
+    Route::put('address', [AuthController::class, "address"])->name("profile");
+    Route::post('upload', [AuthController::class, "upload"])->name("profile");
     
     /**
      * Property
@@ -109,3 +102,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 });
+
+ /**
+  * Route * Public *
+  * @see \App\Http\Controllers\PropertyController
+  * @see \App\Http\Controllers\PropertyController::all()
+  * @see \App\Http\Controllers\PropertyController::base()
+  */
+ Route::get('base', [PropertyController::class, 'base'])->name('property.all');
+ Route::get('all', [PropertyController::class, 'all'])->name('property.all');
+ Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);

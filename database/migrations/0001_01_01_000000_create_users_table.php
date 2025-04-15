@@ -22,6 +22,12 @@ return new class extends Migration
             $table->date("birthdate");
             $table->enum("gender",["M","F"])->default('M');
             $table->string('path_photo')->nullable();
+            $table->string('biography')->nullable();
+            /**address */
+            $table->string('province')->nullable();
+            $table->string('country')->nullable();
+            $table->string('municipality')->nullable();
+            $table->string('postal_code')->nullable();
             $table->boolean('deleted')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

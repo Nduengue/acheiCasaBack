@@ -30,6 +30,11 @@ class User extends Authenticatable
         'birthdate',
         'gender',
         'path_photo',
+        'biography',
+        'province',
+        'country',
+        'municipality',
+        'postal_code',
         'deleted',
     ];
     /**

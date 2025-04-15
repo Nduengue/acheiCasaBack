@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileRequest extends FormRequest
+class UploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,10 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "first_name" => "required|string|max:255",
-            "last_name" => "required|string|max:255",
-            "phone_number" => "required|unique:users,phone_number|string|max:255",
-            "email" => "required|email|unique:users,email|max:255",
-            "birthdate" => "required|date",
-            "gender" => "required|in:M,F",
-            "biography" => "required|string|max:255",
+            "path_photo" => "required|image|mimes:jpeg,png,jpg,gif|max:2048"
         ];
     }
+
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json(
