@@ -37,6 +37,7 @@ class PropertyController extends Controller
         ];
         return response()->json($data, 200);
     }
+    
     /**
      * Display a listing of the resource.
      */
@@ -73,6 +74,12 @@ class PropertyController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+    /**
+     * Display a listing of the resource.
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function all()
     {
         $page = request()->query('page', 1);
@@ -106,6 +113,7 @@ class PropertyController extends Controller
         ];
         return response()->json($data, 200);
     }
+
     /**
      * Calculate the distance between two points using the Haversine formula.
      */
@@ -144,7 +152,14 @@ class PropertyController extends Controller
             "data"=>$properties
         ]);
     }
-
+    /**
+     * Calculate the distance between two points using the Haversine formula.
+     * @param float $lat1 Latitude of the first point
+     * @param float $lon1 Longitude of the first point
+     * @param float $lat2 Latitude of the second point
+     * @param float $lon2 Longitude of the second point
+     * @return float Distance in kilometers
+     */
     private function haversine($lat1, $lon1, $lat2, $lon2)
     {
         $earthRadius = 6371; // Raio da Terra em quilômetros
