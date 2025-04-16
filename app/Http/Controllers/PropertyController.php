@@ -73,6 +73,39 @@ class PropertyController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function all()
+    {
+        $page = request()->query('page', 1);
+        if (request()->query('category_id') == null) {
+        $properties = Property::where('deleted', false)
+            ->where('province', request()->query('province', 'Luanda'))
+            ->orWhere('announces', true)
+            ->orderBy('announces', 'desc')
+            ->paginate(8, ['*'], 'page', $page);
+        }
+        if (request()->query('category_id') != null) {
+            $properties = Property::where('deleted', false)
+                    ->where('province', request()->query('province', 'Luanda'))
+                    ->where('category_id', request()->query('category_id'))
+                    ->paginate(8, ['*'], 'page', $page);
+        }
+        // Check if the user has any properties
+        if ($properties->isEmpty()) {
+            return response()->json([
+                'message' => 'No properties found'
+            ], 404);
+        }
+        $properties->each(function ($property) {
+            $property->accommodationPhoto;
+            $property->offer;
+            $property->contact;
+            $property->category;
+        });
+        $data = [
+            'data' => $properties
+        ];
+        return response()->json($data, 200);
+    }
     /**
      * Calculate the distance between two points using the Haversine formula.
      */

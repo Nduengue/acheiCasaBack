@@ -30,6 +30,11 @@ class User extends Authenticatable
         'birthdate',
         'gender',
         'path_photo',
+        'biography',
+        'province',
+        'country',
+        'municipality',
+        'postal_code',
         'deleted',
     ];
     /**
@@ -77,7 +82,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<Agency>
      */
-    public function agency(){
+    public function agencies(){
 
         return $this->hasMany(Agency::class);
         

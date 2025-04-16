@@ -28,7 +28,7 @@ class ProfileRequest extends FormRequest
             "email" => "required|email|unique:users,email|max:255",
             "birthdate" => "required|date",
             "gender" => "required|in:M,F",
-            "path_photo" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "biography" => "required|string|max:255",
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

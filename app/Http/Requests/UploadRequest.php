@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreAgencyRequest extends FormRequest
+class UploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,18 +22,13 @@ class StoreAgencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" =>"required|string",
-            "code" =>"required|string|unique:agencies,code",
-            "email" =>"required|email",
-            "address" =>"required|string",
-            "phone" =>"required|string",
-            "path_photo" =>"nullable|image|mimes:png,jpg",
+            "path_photo" => "required|image|mimes:jpeg,png,jpg,gif|max:2048"
         ];
     }
-    
-    protected function failedValidation(Validator $validator)
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        throw new HttpResponseException(response()->json(
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json(
             [
                 'success' => false,
                 'message' => 'Erro de validação!',

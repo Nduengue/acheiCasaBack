@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       /*  
+        /*  
             Modelo
             Table agency {
                 id serial [primary key]
@@ -26,7 +26,9 @@ return new class extends Migration
         */
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')
+                  ->constrained()
+                  ->onDelete('cascade');
             $table->string('name');
             $table->string('code')->unique()->nullable();
             $table->string('email')->nullable();

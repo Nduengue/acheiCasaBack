@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CodeRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\RecurveRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetRequest;
+use App\Http\Requests\UploadRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +74,49 @@ class AuthController extends Controller
         $user->update(array_merge($request->validated(), [
             'path_photo' => $path ?? $user->path_photo,
         ]));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'data' => $user,
+        ]);
+    }
+
+    public function upload(UploadRequest $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated'
+            ], 401);
+        }
+        $path = $user->path_photo; 
+        // uploda de imagem
+        if ($request->hasFile('path_photo')) {
+            $path = $request->file('path_photo')->store('photo', 'public');
+        }
+        $user->update([
+            'path_photo' => $path,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'data' => $user,
+        ]);
+    }
+
+    public function address(AddressRequest $request){
+        $user = Auth::user();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated'
+            ], 401);
+        }
+
+        $user->update($request->validated());
 
         return response()->json([
             'success' => true,
