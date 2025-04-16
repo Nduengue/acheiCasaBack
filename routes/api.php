@@ -82,14 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\PropertyController::nearby()
      */
     Route::get('nearby', [PropertyController::class, 'nearby'])->name('property.nearby');
-<<<<<<< HEAD
-    Route::resource("agency",AgencyController::class);
-
-});
-Route::get('base', [PropertyController::class, 'base'])->name('property.all');
-=======
     Route::resource('agency',AgencyController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
->>>>>>> 7db88f745e38833291986c08ce1eec79b7247268
 
 
     /**
@@ -121,12 +114,12 @@ Route::get('base', [PropertyController::class, 'base'])->name('property.all');
 
 });
 
- /**
-  * Route * Public *
-  * @see \App\Http\Controllers\PropertyController
-  * @see \App\Http\Controllers\PropertyController::all()
-  * @see \App\Http\Controllers\PropertyController::base()
-  */
- Route::get('base', [PropertyController::class, 'base'])->name('property.all');
- Route::get('all', [PropertyController::class, 'all'])->name('property.all');
- Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);
+/**
+ * Route * Public *
+* @see \App\Http\Controllers\PropertyController
+* @see \App\Http\Controllers\PropertyController::all()
+* @see \App\Http\Controllers\PropertyController::base()
+*/
+Route::get('base', [PropertyController::class, 'base'])->name('property.all');
+Route::get('all', [PropertyController::class, 'all'])->name('property.all');
+Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);
