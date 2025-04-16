@@ -29,12 +29,12 @@ use Illuminate\Support\Facades\Route;
  Route::post('code', [AuthController::class, "code"])->name("code");
  Route::post('logout', [AuthController::class, "logout"])->name("logout");
  
- Route::get("login", function (Request $request) {
-    return response()->json([
-        "success" => false,
-        "message" => "You need to be logged in to register interest",
-    ], 401);
-})->name("login");
+    Route::get("login", function (Request $request) {
+        return response()->json([
+            "success" => false,
+            "message" => "You need to be logged in to register interest",
+        ], 401);
+    })->name("login");
  
   /**
   * * Auth * Facebook *
