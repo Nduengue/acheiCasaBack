@@ -363,8 +363,15 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        $user = Auth::user();
-        if ($user) {
+        $user = Auth::id();
+        // Verifica se o usuário está autenticado
+        return response()->json([
+            'success' => false,
+            'message' => 'User not authenticated',
+            "data" => $user,
+        ], 200);
+        
+        if (Auth::check()) {
             $user->tokens()->delete();
             return response()->json([
                 'message' => 'Logout successful'
