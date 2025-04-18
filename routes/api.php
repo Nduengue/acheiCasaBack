@@ -108,10 +108,43 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('notification/{id}',[NotificationController::class,'marcarComoLida'])->name('notification.lida');
     
     Route::post('interest/{property}', [OpenChatController::class, 'interest'])->name('openChat.interest');
+    /**
+     * Message
+     * @see \App\Http\Controllers\MessageController
+     * @see \App\Http\Controllers\MessageController::index()
+     * @see \App\Http\Controllers\MessageController::show()
+     * @see \App\Http\Controllers\MessageController::store()
+     * 
+     */
     Route::get('message', [OpenChatController::class, 'index'])->name('openChat.index');
     Route::get('message/{chat}', [OpenChatController::class, 'show'])->name('openChat.show');
     Route::post('message/{chat}', [OpenChatController::class, 'store'])->name('message.store');
-
+    /**
+     * CheckPoint
+     * @see \App\Http\Controllers\CheckPointController
+     * @see \App\Http\Controllers\CheckPointController::index() 
+     * @see \App\Http\Controllers\CheckPointController::show()
+     * @see \App\Http\Controllers\CheckPointController::store()
+     * @see \App\Http\Controllers\CheckPointController::update()
+     * @see \App\Http\Controllers\CheckPointController::destroy()
+     */
+    Route::apiResource('checkPoint', CheckPointController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    
+    /**
+     * PaymentReceipt
+     * @see \App\Http\Controllers\PaymentReceiptController
+     * @see \App\Http\Controllers\PaymentReceiptController::index()
+     * @see \App\Http\Controllers\PaymentReceiptController::store()
+     */
+    Route::apiResource('paymentReceipt', PaymentReceiptController::class)->only(['index', 'store']);
+    /**
+     * Business
+     * @see \App\Http\Controllers\BusinessController
+     * @see \App\Http\Controllers\BusinessController::index()
+     * @see \App\Http\Controllers\BusinessController::show()
+     * @see \App\Http\Controllers\BusinessController::store()
+     */
+    Route::apiResource('business', BusinessController::class)->only(['index', 'show', 'store']);
 });
 
 /**

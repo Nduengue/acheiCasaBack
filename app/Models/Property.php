@@ -60,6 +60,14 @@ class Property extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function checkPoint()
+    {
+        return $this->hasMany(CheckPoint::class);
+    }
+    public function business()
+    {
+        return $this->hasMany(Business::class);
+    }
     public function getPhotoPathAttribute($value)
     {
         return asset('storage/' . $value);

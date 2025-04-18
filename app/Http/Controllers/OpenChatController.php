@@ -38,6 +38,13 @@ class OpenChatController extends Controller
         }
         // montar resposta
 
+        //bluid response open chats
+        foreach ($openChats as $openChat) {
+            $openChat->property = $openChat->property()->with(['user'])->first();
+            $openChat->property->user = $openChat->property->user()->first();
+            $openChat->messages = $openChat->messages()->with(['sender'])->get();
+        }
+
         return response()->json([
             "success" => true,
             "data" => $openChats,
@@ -82,7 +89,13 @@ class OpenChatController extends Controller
             "GET",
             "message"
         ));
-
+        // build response tree messages
+        $openChat->load('messages');
+        $openChat->load('messages.sender');
+        foreach ($openChat->messages as $message) {
+            $message->sender = $message->sender()->first();
+        }
+        $openChat->property->user = $openChat->property->user()->first();
         return response()->json([
             "success" => true,
             "data" => $openChat,
@@ -130,6 +143,19 @@ class OpenChatController extends Controller
                 "sent_in"=>date("Y-m-d H:i:s"),
                 "read"=>false,
             ]);
+            //business
+            $property->business()->create([
+                'property_id' => $property->id,
+                'buyer_id' => auth()->user()->id,
+                'seller_id' => $property->user->id,
+                'intermediary_id' => null,
+                'price' => $property->price,
+                'status' => 'pending',
+                'type_of_business' => $property->type_of_business,
+                'started_at' => now(),
+                'closed_at' => null,
+                'notes' => null,
+            ]);
             //notificar o corretor
             $property->user->notify(new \App\Notifications\Notice(
                 "Novo Interesse",
@@ -138,6 +164,45 @@ class OpenChatController extends Controller
                 "GET",
                 "message"
             ));
+        }
+        //if property type of business is Aluguel
+        if($property->type_of_business=="A" ){
+            
+            $openChat->messages()->create([
+                "sender_id"=>auth()->user()->id,
+                "content"=>"Interesse neste Imovel !",
+                "sent_in"=>date("Y-m-d H:i:s"),
+                "read"=>false,
+            ]);
+            //notificar o corretor
+            $property->user->notify(new \App\Notifications\Notice(
+                "Novo Interesse",
+                "Você recebeu um novo interesse no imóvel ".$property->title,
+                route("openChat.show", $openChat->id),
+                "GET",
+                "message"
+            ));
+            // checkin
+            $property->checkPoint()->create([
+                'user_id' => auth()->user()->id,
+                'property_id' => $property->id,
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'status' => 'check_in',
+            ]);
+            //business
+            $property->business()->create([
+                'property_id' => $property->id,
+                'buyer_id' => auth()->user()->id,
+                'seller_id' => $property->user->id,
+                'intermediary_id' => null,
+                'price' => $property->price,
+                'status' => 'pending',
+                'type_of_business' => $property->type_of_business,
+                'started_at' => now(),
+                'closed_at' => null,
+                'notes' => null,
+            ]);
         }
         $openChat->load('property');
         $openChat->load('property.user');
