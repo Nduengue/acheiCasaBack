@@ -13,15 +13,10 @@ class CheckPointController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // where user_id = auth()->user()->id
+        $checkpoints =  CheckPoint::where('user_id', auth()->user()->id)
+                        ->get();
+        return response()->json($checkpoints);
     }
 
     /**
@@ -29,7 +24,15 @@ class CheckPointController extends Controller
      */
     public function store(StoreCheckPointRequest $request)
     {
-        //
+        $checkPoint = CheckPoint::create([
+            'user_id' => auth()->user()->id,
+            'property_id' => $request->property_id,
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+            'status' => $request->status,
+        ]);
+
+        return response()->json($checkPoint, 201);
     }
 
     /**
@@ -37,15 +40,11 @@ class CheckPointController extends Controller
      */
     public function show(CheckPoint $checkPoint)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CheckPoint $checkPoint)
-    {
-        //
+        // where user_id = auth()->user()->id
+        if ($checkPoint->user_id != auth()->user()->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        return response()->json($checkPoint);
     }
 
     /**
@@ -53,7 +52,21 @@ class CheckPointController extends Controller
      */
     public function update(UpdateCheckPointRequest $request, CheckPoint $checkPoint)
     {
-        //
+        // where user_id = auth()->user()->id
+        if ($checkPoint->user_id != auth()->user()->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        // Check if the status is cancelled
+        if ($request->status == 'cancelled') {
+            $checkPoint->update([
+                'status' => 'cancelled',
+                'check_out' => null,
+            ]);
+            return response()->json($checkPoint);
+        }
+        // Check if the status is check_out
+        $checkPoint->update($request->validated());
+        return response()->json($checkPoint);
     }
 
     /**
@@ -61,6 +74,11 @@ class CheckPointController extends Controller
      */
     public function destroy(CheckPoint $checkPoint)
     {
-        //
+        // where user_id = auth()->user()->id
+        if ($checkPoint->user_id != auth()->user()->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $checkPoint->delete();
+        return response()->json(['message' => 'CheckPoint deleted successfully']);
     }
 }

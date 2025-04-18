@@ -9,19 +9,31 @@ class PaymentReceipt extends Model
 {
     /** @use HasFactory<\Database\Factories\PaymentReceiptFactory> */
     use HasFactory;
+    /*  Table payment_receipts {
+        id serial [primary key]
+        business_id int [ref: > businesses.id]
+        user_id int [ref: > user.id, note: "quem enviou o comprovativo"] 
+        path_receipt varchar [note: "caminho do comprovativo (imagem ou pdf)"]
+        payment_method enum("bank_transfer", "cash", "other") [default: "bank_transfer"]
+        sent_at timestamp 
+        approved bool [default: false, note: "Aprovado manualmente?"]
+        notes text [null]
+    } */
     protected $fillable = [
         'business_id',
         'user_id',
+        'path_receipt',
         'payment_method',
-        'amount',
-        'status',
-        'deleted'
+        'sent_at',
+        'approved',
+        'notes',
     ];
     protected $casts = [
-        'deleted' => 'boolean',
+        'sent_at' => 'datetime',
+        'approved' => 'boolean',
     ];
     protected $attributes = [
-        'deleted' => false,
+        'approved' => false,
     ];
     public function business()
     {
@@ -31,8 +43,8 @@ class PaymentReceipt extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function scopeActive($query)
+    public function getPathReceiptAttribute($value)
     {
-        return $query->where('deleted', false);
+        return asset('storage/' . $value);
     }
 }

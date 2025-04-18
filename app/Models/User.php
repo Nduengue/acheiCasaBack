@@ -87,6 +87,27 @@ class User extends Authenticatable
         return $this->hasMany(Agency::class);
         
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Business>
+     */
+    public function business(){
+
+        return $this->hasMany(Business::class);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<CheckPoint>
+     */
+    public function checkPoint(){
+
+        return $this->hasMany(CheckPoint::class);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<PaymentReceipt>
+     */
+    public function paymentReceipt(){
+
+        return $this->hasMany(PaymentReceipt::class);
+    }
     
 
 }

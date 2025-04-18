@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentReceiptRequest;
 use App\Http\Requests\UpdatePaymentReceiptRequest;
+
 use App\Models\PaymentReceipt;
 
 class PaymentReceiptController extends Controller
@@ -48,13 +49,22 @@ class PaymentReceiptController extends Controller
                 "message" => "You need to be logged in to register interest",
             ], 401);
         }
+        // upload file
+        if (!$request->hasFile('path_receipt')) {
+            return response()->json([
+                "success" => false,
+                "message" => "File not found",
+            ], 422);
+        }
+        $path = $request->file('path_receipt')->store('payment_receipts', 'public');
         // create payment receipt
         $paymentReceipt = PaymentReceipt::create([
             'business_id' => $request->business_id,
             'user_id' => auth()->user()->id,
+            'path_receipt' => $path,
             'payment_method' => $request->payment_method,
             'amount' => $request->amount,
-            'status' => $request->status,
+            'status' => $request->status
         ]);
         return response()->json([
             "success" => true,
@@ -82,27 +92,6 @@ class PaymentReceiptController extends Controller
             "data" => $paymentReceipt,
         ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePaymentReceiptRequest $request, PaymentReceipt $paymentReceipt)
-    {
-        //if user is not authenticated
-        if (!auth()->user()) {
-            return response()->json([
-                "success" => false,
-                "message" => "You need to be logged in to register interest",
-            ], 401);
-        }
-        // update payment receipt
-        $paymentReceipt->update($request->validated());
-        return response()->json([
-            "success" => true,
-            "data" => $paymentReceipt,
-        ]);
-    }
-
     /**
      * Remove the specified resource from storage.
      */

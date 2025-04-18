@@ -21,10 +21,15 @@ class BusinessController extends Controller
             ], 401);
         }
         $businesses = Business::with(['property', 'buyer', 'seller', 'intermediary'])
-            ->orWhere('buyer_id', auth()->user()->id)
-            ->orWhere('seller_id', auth()->user()->id)
-            ->orWhere('intermediary_id', auth()->user()->id)
-            ->get();
+        ->where('deleted', false)
+        ->where(function ($query) {
+            $userId = auth()->user()->id;
+            $query->where('buyer_id', $userId)
+                  ->orWhere('seller_id', $userId)
+                  ->orWhere('intermediary_id', $userId);
+        })
+        ->get();
+    
         //if no businesses found
         if ($businesses->isEmpty()) {
             return response()->json([
@@ -37,13 +42,6 @@ class BusinessController extends Controller
             $businesses = $businesses->where('status', request()->query('status'));
         }
 
-        // build response businesses
-        foreach ($businesses as $business) {
-            $business->property = $business->property()->with(['user'])->first();
-            $business->buyer = $business->buyer()->with(['user'])->first();
-            $business->seller = $business->seller()->with(['user'])->first();
-            $business->intermediary = $business->intermediary()->with(['user'])->first();
-        }
         return response()->json([
             "success" => true,
             "data" => $businesses,
@@ -83,6 +81,13 @@ class BusinessController extends Controller
                 "success" => false,
                 "message" => "You need to be logged in to register interest",
             ], 401);
+        }
+        // check if user is the owner of the business
+        if ($business->buyer_id != auth()->user()->id && $business->seller_id != auth()->user()->id && $business->intermediary_id != auth()->user()->id) {
+            return response()->json([
+                "success" => false,
+                "message" => "You are not authorized to update this business",
+            ], 403);
         }
         // update business
         $business->update($request->validated());

@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   /*  Table payment_receipts {
+    /*  Table payment_receipts {
         id serial [primary key]
         business_id int [ref: > businesses.id]
         user_id int [ref: > user.id, note: "quem enviou o comprovativo"] 

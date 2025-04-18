@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OpenChat;
 use App\Http\Requests\StoreOpenChatRequest;
 use App\Http\Requests\UpdateOpenChatRequest;
+use App\Http\Requests\StoreCheckPointRequest;
 use App\Models\Property;
 
 class OpenChatController extends Controller
@@ -107,8 +108,9 @@ class OpenChatController extends Controller
      * @param  int  $property
      * @return \Illuminate\Http\JsonResponse
      */
-    public function interest($property)
+    public function interest($property,StoreCheckPointRequest $request)
     {
+        
         //if user is not authenticated
         if (!auth()->user()) {
             return response()->json([
@@ -167,7 +169,7 @@ class OpenChatController extends Controller
         }
         //if property type of business is Aluguel
         if($property->type_of_business=="A" ){
-            
+            $request->validated();
             $openChat->messages()->create([
                 "sender_id"=>auth()->user()->id,
                 "content"=>"Interesse neste Imovel !",
@@ -203,6 +205,9 @@ class OpenChatController extends Controller
                 'closed_at' => null,
                 'notes' => null,
             ]);
+            //load checkPoint
+            $openChat->checkPoint = $property->checkPoint;
+
         }
         $openChat->load('property');
         $openChat->load('property.user');

@@ -7,6 +7,9 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OpenChatController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\CheckPointController;
+use App\Http\Controllers\PaymentReceiptController;
+use App\Http\Controllers\BusinessController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -136,7 +139,7 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\PaymentReceiptController::index()
      * @see \App\Http\Controllers\PaymentReceiptController::store()
      */
-    Route::apiResource('paymentReceipt', PaymentReceiptController::class)->only(['index', 'store']);
+    Route::apiResource('paymentReceipt', PaymentReceiptController::class)->only(['index','show', 'store','destroy']);
     /**
      * Business
      * @see \App\Http\Controllers\BusinessController
@@ -144,7 +147,7 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\BusinessController::show()
      * @see \App\Http\Controllers\BusinessController::store()
      */
-    Route::apiResource('business', BusinessController::class)->only(['index', 'show', 'store']);
+    Route::apiResource('business', BusinessController::class)->only(['index', 'show', 'update', 'destroy']);
 });
 
 /**
