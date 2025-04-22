@@ -14,10 +14,56 @@ class PropertyFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    /* 
+        Modelo
+        Table property {
+            id serial [primary key]
+            user_id int [ref: > user.id]
+            category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
+            title varchar
+            type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
+            status varchar [note: "usado,novo etc"]
+            type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
+            furnished  enum("yes","no") [note: "Mobilada? Não"]
+            country varchar
+            address varchar
+            city varchar
+            province varchar
+            location array [null, note: "[latitude & longitude]"] 
+            description text
+            room int [null]
+            bathroom int [null]
+            useful_sand decimal
+            price decimal
+            announces bool [default: false]
+            favorite bool [default: false]
+            deleted bool [default: false]
+        }
+    */
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory()->create()->id,
+            'category_id' => $this->faker->randomElement(['Praia', 'Reserva', 'Loja', 'Terreno', 'Residencial', 'Escritorio', 'Quartos', 'Armazem']),
+            'title' => $this->faker->sentence(3),
+            'type' => $this->faker->randomElement(['Casa', 'Apartamento', 'Armazem', 'Loja', 'Terreno']),
+            'status' => $this->faker->randomElement(['usado', 'novo']),
+            'type_of_business' => $this->faker->randomElement(['A', 'V']),
+            'furnished' => $this->faker->randomElement(['yes', 'no']),
+            'country' => $this->faker->country(),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
+            'province' => $this->faker->randomElement(['Icolo Bengo', 'Luanda']),
+            'location' => json_encode([""=>$this->faker->latitude(),"" =>$this->faker->longitude()]),
+            'description' => $this->faker->paragraph(),
+            'room' => $this->faker->numberBetween(1, 10),
+            'bathroom' => $this->faker->numberBetween(1, 10),
+            'useful_sand' => $this->faker->randomFloat(2, 10, 1000),
+            'favorite' => $this->faker->boolean(),
+            'announces' => $this->faker->boolean(),
+            'price' => $this->faker->randomFloat(2, 10000, 1000000),
+            'deleted' => false,
         ];
     }
 }

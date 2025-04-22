@@ -20,7 +20,7 @@ class BusinessController extends Controller
                 "message" => "You need to be logged in to register interest",
             ], 401);
         }
-        $businesses = Business::with(['property', 'buyer', 'seller', 'intermediary'])
+        $businesses = Business::with(['property.checkPoint', 'buyer', 'seller', 'intermediary'])
         ->where('deleted', false)
         ->where(function ($query) {
             $userId = auth()->user()->id;

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCheckPointRequest extends FormRequest
+class StoreComparisonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,19 +22,24 @@ class UpdateCheckPointRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'check_in' => 'required|date',
-            'check_out' => 'nullable|date|after:check_in',
+            'property_id' => 'required|exists:properties,id',
+            'user_id' => 'nullable|exists:users,id',
         ];
     }
-    
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json(
             [
                 'success' => false,
-                'message' => 'Erro de validação!',
+                'message' => 'Validation error!',
                 'errors' => $validator->errors()
             ]
         ));
+    }
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => auth()->user()->id,
+        ]);
     }
 }

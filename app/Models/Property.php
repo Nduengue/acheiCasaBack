@@ -25,9 +25,9 @@ class Property extends Model
         'description',
         'room',
         'bathroom',
+        'useful_sand',
         'price',
         'announces',
-        'deleted',
     ];
     protected $hidden = [
         'announces',

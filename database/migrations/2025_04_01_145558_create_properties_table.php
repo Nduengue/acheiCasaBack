@@ -13,9 +13,10 @@ return new class extends Migration
     {
         /* 
             Modelo
-            Table property {
+           Table property {
                 id serial [primary key]
                 user_id int [ref: > user.id]
+                category_id int [ref: > categories.id]
                 title varchar
                 type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
                 status varchar [note: "usado,novo etc"]
@@ -29,14 +30,17 @@ return new class extends Migration
                 description text
                 room int [null]
                 bathroom int [null]
+                useful_sand decimal
                 price decimal
+                announces bool [default: false]
+                favorite bool [default: false]
                 deleted bool [default: false]
-            } 
+            }
         */
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->enum('category_id',["Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem"])->default('other')->comment('Praia, Armazem, Loja, Terreno, Residencial, Escritorios, Quartos, ...');
             $table->string('title');
             $table->string('type')->nullable()->comment('Casa, Apartamento, Armazem, Loja, Terreno, ...');
             $table->string('status')->nullable()->comment('usado,novo etc');
@@ -50,8 +54,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('room')->nullable();
             $table->integer('bathroom')->nullable();
+            $table->decimal('useful_sand', 10, 2)->nullable()->comment('Área útil');
             $table->decimal('price', 10, 2);
             $table->boolean('deleted')->default(false);
+            $table->boolean('favorite')->default(false)->comment('Favorito?');
             $table->boolean('announces')->default(false)->comment('Anunciar?');
             $table->timestamps();
         });

@@ -9,6 +9,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\CheckPointController;
 use App\Http\Controllers\PaymentReceiptController;
+use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\BusinessController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -148,6 +149,14 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\BusinessController::store()
      */
     Route::apiResource('business', BusinessController::class)->only(['index', 'show', 'update', 'destroy']);
+    /**
+     * Comparison
+     * @see \App\Http\Controllers\ComparisonController
+     * @see \App\Http\Controllers\ComparisonController::index()
+     * @see \App\Http\Controllers\ComparisonController::store()
+     * @see \App\Http\Controllers\ComparisonController::destroy()
+     */
+    Route::apiResource('comparison', ComparisonController::class)->only(['index', 'store', 'destroy']);
 });
 
 /**
