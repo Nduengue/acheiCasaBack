@@ -77,7 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
      * Property
      * @see \App\Http\Controllers\PropertyController
      */
-    Route::apiResource('property',PropertyController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::apiResource('property',PropertyController::class)->only(['index', 'store', 'show','destroy']);
+    Route::post('property/{property}', [PropertyController::class, 'update'])->name('property.update');
     
     
     /**

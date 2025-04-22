@@ -44,11 +44,6 @@ class StorePropertyRequest extends FormRequest
             'contact'=>'required',
             'photo'=> 'required|array',
             'photo.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            /**
-             * add validation for offer
-             * offer is an array of objects
-             * each object has an id that exists in the offer_options table
-             */
             'offer' => 'nullable',
             'price' => 'required|numeric|min:0',
         ];
