@@ -38,6 +38,9 @@ class ComparisonController extends Controller
         if (request()->query('room')) {
             $query->orderBy('properties.room', request()->query('room'));
         }
+        if (request()->query('useful_sand')) {
+            $query->orderBy('properties.useful_sand', request()->query('useful_sand'));
+        }
 
         $comparisons = $query->get();
 

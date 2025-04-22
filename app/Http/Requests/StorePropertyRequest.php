@@ -26,7 +26,7 @@ class StorePropertyRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|string|in:Praia, Armazem, Loja, Terreno, Residencial, Escritorios, Quartos,',
+            'category_id' => 'required|string|in:Praia,Armazem,Loja,Terreno,Residencial,Escritorios,Quartos',
             'title' => 'required|string|max:255',
             'type' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
@@ -40,6 +40,7 @@ class StorePropertyRequest extends FormRequest
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',
+            'useful_sand' => 'required_if:category_id,Terreno|string|max:255',
             'contact'=>'required',
             'photo'=> 'required|array',
             'photo.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',

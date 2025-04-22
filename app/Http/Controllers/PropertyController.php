@@ -199,7 +199,6 @@ class PropertyController extends Controller
         $property->load('offer');
         $property->load('accommodationPhoto');
         $property->load('contact');
-        $property->load('category');
         return response()->json([
             'success' => true,
             'data' => $property,
