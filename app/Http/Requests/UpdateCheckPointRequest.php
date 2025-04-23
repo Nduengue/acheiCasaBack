@@ -24,6 +24,7 @@ class UpdateCheckPointRequest extends FormRequest
         return [
             'check_in' => 'required|date',
             'check_out' => 'nullable|date|after:check_in',
+            'status' => 'required|in:check_in,cancelled',
         ];
     }
     

@@ -30,7 +30,6 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->category;
         });
         $data = [
             'data' => $properties
@@ -67,7 +66,6 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->category;
         });
         $data = [
             'data' => $properties
@@ -106,7 +104,6 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->category;
         });
         $data = [
             'data' => $properties
@@ -139,7 +136,6 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->category;
             $property->distance = $this->haversine(
                 request()->query('latitude'),
                 request()->query('longitude'),
