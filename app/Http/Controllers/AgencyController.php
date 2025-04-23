@@ -177,6 +177,20 @@ class AgencyController extends Controller
      */
     public function show(Agency $agency)
     {
+        //check if the agency is deleted is user_id
+        if ($agency->deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Agency not found',
+            ], 404);
+        }
+        //check if the agency is owned by the user
+        if ($agency->user_id != Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
         $data = [
             "data"=>$agency
         ];
