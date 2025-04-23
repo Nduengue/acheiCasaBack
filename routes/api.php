@@ -87,8 +87,8 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\PropertyController::nearby()
      */
     Route::get('nearby', [PropertyController::class, 'nearby'])->name('property.nearby');
-    Route::resource('agency',AgencyController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-
+    Route::resource('agency',AgencyController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('agency/{agency}', [AgencyController::class, 'update'])->name('agency.update');
 
     /**
      * Agency
