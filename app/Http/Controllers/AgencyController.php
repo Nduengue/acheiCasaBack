@@ -215,7 +215,7 @@ class AgencyController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => 'Agency store successfully',
+            'message' => 'Agency update successfully',
             'data' => $agency
         ]);
     }
