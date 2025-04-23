@@ -191,6 +191,8 @@ class AgencyController extends Controller
                 'message' => 'Unauthorized',
             ], 403);
         }
+        // load the agency with the users
+        $agency->load('agencyUsers.user');
         $data = [
             "data"=>$agency
         ];
