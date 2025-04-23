@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ListUserRequest;
 use App\Models\Agency;
 use App\Http\Requests\StoreAgencyRequest;
 use App\Http\Requests\UpdateAgencyRequest;
@@ -144,11 +145,9 @@ class AgencyController extends Controller
     /**
      * list of users to agencies
      */
-    public function listUserToAgency(Request $request)
+    public function listUserToAgency(ListUserRequest $request)
     {
-        $request->validate([
-            'agency_id' => 'required|exists:agencies,id',
-        ]);
+        $request->validated();
 
         $agency = Agency::where('user_id', Auth::id())
                 ->where('id', $request->agency_id)
