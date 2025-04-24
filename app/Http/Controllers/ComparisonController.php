@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComparisonRequest;
-use App\Http\Requests\UpdateComparisonRequest;
 use App\Models\Comparison;
 
 class ComparisonController extends Controller
@@ -57,6 +56,8 @@ class ComparisonController extends Controller
         $comparisonsArray = $comparisons->map(function ($comparison) {
             return [
                 'id' => $comparison->property->id,
+                'category_id' => $comparison->property->category_id,
+                'user_id' => $comparison->property->user_id,
                 'title' => $comparison->property->title,
                 'type' => $comparison->property->type,
                 'status' => $comparison->property->status,
@@ -67,6 +68,8 @@ class ComparisonController extends Controller
                 'city' => $comparison->property->city,
                 'province' => $comparison->property->province,
                 'location' => $comparison->property->location,
+                'length' => $comparison->property->length,
+                'width' => $comparison->property->width,
                 'description' => $comparison->property->description,
                 'room' => $comparison->property->room,
                 'bathroom' => $comparison->property->bathroom,
@@ -82,7 +85,8 @@ class ComparisonController extends Controller
                 'check_point' => $comparison->property->checkPoint,
                 'user' => [
                     'id' => $comparison->user->id,
-                    'name' => $comparison->user->name,
+                    'first_name' => $comparison->user->first_name,
+                    'last_name' => $comparison->user->last_name,
                     'email' => $comparison->user->email,
                     'phone' => $comparison->user->phone,
                     'created_at' => $comparison->user->created_at,
