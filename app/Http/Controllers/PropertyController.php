@@ -31,8 +31,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment;
-$property->like;
+            $property->comment()->where('deleted', false);
+            $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -70,8 +70,8 @@ $property->like;
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment;
-$property->like;
+            $property->comment()->where('deleted', false);
+            $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -111,8 +111,8 @@ $property->like;
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment;
-$property->like;
+            $property->comment()->where('deleted', false);
+            $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -146,14 +146,14 @@ $property->like;
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment;
-$property->like;
+            $property->comment()->where('deleted', false);
+            $property->like()->where("deleted", false);
             $property->user;
             $property->distance = $this->haversine(
-                request()->query('latitude'),
-                request()->query('longitude'),
-                $property->location['lat'],
-                $property->location['lng']
+            request()->query('latitude'),
+            request()->query('longitude'),
+            $property->location['lat'],
+            $property->location['lng']
             );
         });
 
@@ -293,6 +293,12 @@ $property->like;
         $property->offer()->update(['deleted' => true]);
         $property->load('offer');
         $property->load('accommodationPhoto');
+        $property->load('contact');
+        $property->load('comment');
+        $property->load('like');
+        $property->load('user');
+        $property->load('business');
+        $property->load('checkPoint');
         return response()->json([
             'success' => true,
             'message' => 'Property deleted successfully',
