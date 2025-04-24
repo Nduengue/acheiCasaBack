@@ -13,6 +13,86 @@ class ComparisonController extends Controller
      */
     public function index()
     {
+       /*  como os dados
+       {
+            "id": 11,
+            "user_id": 1,
+            "category_id": "Praia",
+            "title": "Apartamento do Sequele",
+            "type": null,
+            "status": "usado",
+            "type_of_business": "A",
+            "furnished": "yes",
+            "country": "Angola",
+            "address": "Centralidade do Sequele",
+            "city": "Cacuaco",
+            "province": "Icolo Bengo",
+            "location": {
+                "lat": -8.8383,
+                "lng": 13.2344
+            },
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid reprehenderit sint cum optio obcaecati mollitia, quidem in, iusto necessitatibus cupiditate sequi ratione eum iure vitae odio delectus autem quasi eligendi!",
+            "room": 1,
+            "bathroom": 1,
+            "useful_sand": null,
+            "price": 150000,
+            "deleted": false,
+            "favorite": 0,
+            "created_at": "2025-04-22T15:47:30.000000Z",
+            "updated_at": "2025-04-22T15:47:30.000000Z",
+            "accommodation_photo": [
+                {
+                    "id": 1,
+                    "property_id": 11,
+                    "photo_path": "http://achei-casa-api.mtapp.ao/storage/uploads/E8ggfmRAHEBLMAD03qRxBRcsjl1dNRyMdbUQrU6J.png",
+                    "deleted": false
+                },
+                {
+                    "id": 2,
+                    "property_id": 11,
+                    "photo_path": "http://achei-casa-api.mtapp.ao/storage/uploads/qDRj5rEGSx2fAt3zUSJwMZS6qqZQTQ5qN6J7wNTF.jpg",
+                    "deleted": false
+                }
+            ],
+            "offer": [
+                {
+                    "id": 1,
+                    "property_id": 11,
+                    "offer_option_id": 1,
+                    "deleted": false
+                },
+                {
+                    "id": 2,
+                    "property_id": 11,
+                    "offer_option_id": 2,
+                    "deleted": false
+                }
+            ],
+            "contact": [
+                {
+                    "id": 1,
+                    "agency_id": null,
+                    "property_id": 11,
+                    "type": "W",
+                    "value": "+244936028718"
+                },
+                {
+                    "id": 2,
+                    "agency_id": null,
+                    "property_id": 11,
+                    "type": "C",
+                    "value": "+244956654336"
+                },
+                {
+                    "id": 3,
+                    "agency_id": null,
+                    "property_id": 11,
+                    "type": "M",
+                    "value": "geral@achei.ao"
+                }
+            ]
+        } */
+
         // Check if the user is authenticated
         if (!auth()->user()) {
             return response()->json([
@@ -70,7 +150,32 @@ class ComparisonController extends Controller
                 'description' => $comparison->property->description,
                 'room' => $comparison->property->room,
                 'bathroom' => $comparison->property->bathroom,
-                'price' => $comparison->property->price
+                'useful_sand' => $comparison->property->useful_sand,
+                'price' => $comparison->property->price,
+                'deleted' => $comparison->property->deleted,
+                'favorite' => $comparison->property->favorite,
+                'created_at' => $comparison->property->created_at,
+                'updated_at' => $comparison->property->updated_at,
+                'accommodation_photo' => $comparison->property->accommodationPhoto,
+                'offer' => $comparison->property->offer,
+                'contact' => $comparison->property->contact,
+                'check_point' => $comparison->property->checkPoint,
+                'user' => [
+                    'id' => $comparison->user->id,
+                    'name' => $comparison->user->name,
+                    'email' => $comparison->user->email,
+                    'phone' => $comparison->user->phone,
+                    'created_at' => $comparison->user->created_at,
+                    'updated_at' => $comparison->user->updated_at,
+                ],
+                'comparison' => [
+                    'id' => $comparison->id,
+                    'user_id' => $comparison->user_id,
+                    'property_id' => $comparison->property_id,
+                    'deleted' => $comparison->deleted,
+                    'created_at' => $comparison->created_at,
+                    'updated_at' => $comparison->updated_at,
+                ],
             ];
         })->toArray();
 
