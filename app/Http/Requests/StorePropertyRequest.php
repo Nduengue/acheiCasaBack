@@ -17,6 +17,36 @@ class StorePropertyRequest extends FormRequest
     {
         return true;
     }
+        /* 
+            Modelo
+            Table property {
+                id serial [primary key]
+                user_id int [ref: > user.id]
+                category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
+                title varchar
+                type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
+                status varchar [note: "usado,novo etc"]
+                type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
+                furnished  enum("yes","no") [note: "Mobilada? Não"]
+                country varchar
+                address varchar
+                city varchar
+                province varchar
+                location array [null, note: "[latitude & longitude]"]
+                length decimal [null, note: "comprimento"]  
+                width decimal [null, note: "largura"]
+                description text
+                room int [null]
+                bathroom int [null]
+                useful_sand decimal
+                announces bool [default: false]
+                favorite bool [default: false]
+                deleted bool [default: false]
+                time_unit enum("second","minute","hours","day","week","month","year") [null]
+                minimum_time decimal [null]
+                price decimal
+            }
+        */
 
     /**
      * Get the validation rules that apply to the request.
@@ -38,8 +68,8 @@ class StorePropertyRequest extends FormRequest
             'city' => 'required|string|max:255',
             'province' => 'required|string|max:255',
             'location' => 'nullable',
-            'length' => 'nullable|numeric|min:0',
-            'width' => 'nullable|numeric|min:0',
+            'length' => 'required_if:category_id,Terreno|numeric|min:0',
+            'width' => 'required_if:category_id,Terreno|numeric|min:0',
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',
@@ -48,6 +78,8 @@ class StorePropertyRequest extends FormRequest
             'photo'=> 'required|array',
             'photo.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'offer' => 'nullable',
+            'time_unit' => 'required_if:type_of_business,A|in:second,minute,hours,day,week,month,year',
+            'minimum_time' => 'required_if:type_of_business,A|numeric|min:0',
             'price' => 'required|numeric|min:0',
         ];
     }

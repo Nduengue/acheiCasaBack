@@ -48,6 +48,8 @@ class UpdatePropertyRequest extends FormRequest
             'photo'=> 'nullable|array',
             'photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'offer' => 'nullable',
+            'time_unit' => 'nullable|in:second,minute,hours,day,week,month,year',
+            'minimum_time' => 'nullable|numeric|min:0',
             'price' => 'nullable|numeric|min:0',
         ];
     }

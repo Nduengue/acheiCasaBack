@@ -33,10 +33,12 @@ return new class extends Migration
                 room int [null]
                 bathroom int [null]
                 useful_sand decimal
-                price decimal
                 announces bool [default: false]
                 favorite bool [default: false]
                 deleted bool [default: false]
+                time_unit enum("second","minute","hours","day","week","month","year") [null]
+                minimum_time decimal [null]
+                price decimal
             }
         */
         Schema::create('properties', function (Blueprint $table) {
@@ -59,10 +61,12 @@ return new class extends Migration
             $table->integer('room')->nullable();
             $table->integer('bathroom')->nullable();
             $table->decimal('useful_sand', 10, 2)->nullable()->comment('Área útil');
-            $table->decimal('price', 10, 2);
             $table->boolean('deleted')->default(false);
             $table->boolean('favorite')->default(false)->comment('Favorito?');
             $table->boolean('announces')->default(false)->comment('Anunciar?');
+            $table->enum('time_unit',["second","minute","hours","day","week","month","year"])->nullable(); // Ex: "dias", "semanas", "meses"
+            $table->decimal('minimum_time')->nullable(); // Tempo mínimo permitido
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
