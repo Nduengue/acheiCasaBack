@@ -55,7 +55,7 @@ class PropertyFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'province' => $this->faker->randomElement(['Icolo Bengo', 'Luanda']),
-            'location' => json_encode([""=>$this->faker->latitude(),"" =>$this->faker->longitude()]),
+            'location' => json_encode(["lat"=>$this->faker->latitude(),"lng" =>$this->faker->longitude()]),
             'description' => $this->faker->paragraph(),
             'room' => $this->faker->numberBetween(1, 10),
             'bathroom' => $this->faker->numberBetween(1, 10),

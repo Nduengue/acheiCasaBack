@@ -28,8 +28,8 @@ class ComparisonController extends Controller
             "city": "Cacuaco",
             "province": "Icolo Bengo",
             "location": {
-                "lat": -8.8383,
-                "lng": 13.2344
+                "": -8.8383,
+                "": 13.2344
             },
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid reprehenderit sint cum optio obcaecati mollitia, quidem in, iusto necessitatibus cupiditate sequi ratione eum iure vitae odio delectus autem quasi eligendi!",
             "room": 1,
