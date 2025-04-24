@@ -31,8 +31,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment()->where('deleted', false);
-            $property->like()->where("deleted", false);
+            $property->comments = $property->comment()->where('deleted', false);
+            $property->likes = $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -70,8 +70,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment()->where('deleted', false);
-            $property->like()->where("deleted", false);
+            $property->comments = $property->comment()->where('deleted', false);
+            $property->likes = $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -111,8 +111,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment()->where('deleted', false);
-            $property->like()->where("deleted", false);
+            $property->comments = $property->comment()->where('deleted', false);
+            $property->likes = $property->like()->where("deleted", false);
             $property->user;
         });
         $data = [
@@ -146,8 +146,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment()->where('deleted', false);
-            $property->like()->where("deleted", false);
+            $property->comments = $property->comment()->where('deleted', false);
+            $property->likes = $property->like()->where("deleted", false);
             $property->user;
             $property->distance = $this->haversine(
             request()->query('latitude'),
