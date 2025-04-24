@@ -62,6 +62,8 @@ class PropertyFactory extends Factory
             'useful_sand' => $this->faker->randomFloat(2, 10, 1000),
             'favorite' => $this->faker->boolean(),
             'announces' => $this->faker->boolean(),
+            'time_unit' => $this->faker->randomElement(['second', 'minute', 'hours', 'day', 'week', 'month', 'year']),
+            'minimum_time' => $this->faker->randomFloat(2, 1, 100),
             'price' => $this->faker->randomFloat(2, 10000, 1000000),
             'deleted' => false,
         ];
