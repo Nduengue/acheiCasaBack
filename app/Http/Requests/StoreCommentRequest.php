@@ -24,6 +24,7 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "property_id" => "required|exists:properties,id",
             "comment" => "required|string|max:255",
         ];
     }
