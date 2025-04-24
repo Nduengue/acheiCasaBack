@@ -17,7 +17,7 @@ class UpdatePropertyRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
+    } 
 
     /**
      * Get the validation rules that apply to the request.
@@ -38,6 +38,8 @@ class UpdatePropertyRequest extends FormRequest
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
             'location' => 'nullable',
+            'length' => 'nullable|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',

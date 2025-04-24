@@ -12,6 +12,7 @@ class StorePropertyRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+     
     public function authorize(): bool
     {
         return true;
@@ -37,6 +38,8 @@ class StorePropertyRequest extends FormRequest
             'city' => 'required|string|max:255',
             'province' => 'required|string|max:255',
             'location' => 'nullable',
+            'length' => 'nullable|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',

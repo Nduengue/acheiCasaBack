@@ -225,6 +225,30 @@ class PropertyController extends Controller
     public function update(UpdatePropertyRequest $request, Property $property)
     {
         $property->update($request->validated());
+        // Update the offers if they exist
+        if ($request->has('offer')) {
+            $property->offer()->delete();
+            $property->offer()->createMany($request->input('offer'));
+        }
+        // Update the accommodation photos if they exist
+        if ($request->hasFile('photo')) {
+            $property->accommodationPhoto()->delete();
+            foreach ($request->file('photo') as $image) {
+                $path = $image->store('uploads', 'public');
+                $property->accommodationPhoto()->create([
+                    'photo_path' => $path
+                ]);
+            }
+        }
+        // Update the contact if it exists
+        if ($request->has('contact')) {
+            $property->contact()->delete();
+            $property->contact()->createMany($request->input('contact'));
+        }
+        // Load the related models
+        $property->load('offer');
+        $property->load('accommodationPhoto');
+        $property->load('contact');
         return response()->json([
             'success' => true,
             'data' => $property,

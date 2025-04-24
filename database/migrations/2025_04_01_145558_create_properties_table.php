@@ -13,10 +13,10 @@ return new class extends Migration
     {
         /* 
             Modelo
-           Table property {
+            Table property {
                 id serial [primary key]
                 user_id int [ref: > user.id]
-                category_id int [ref: > categories.id]
+                category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
                 title varchar
                 type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
                 status varchar [note: "usado,novo etc"]
@@ -26,7 +26,9 @@ return new class extends Migration
                 address varchar
                 city varchar
                 province varchar
-                location array [null, note: "[latitude & longitude]"] 
+                location array [null, note: "[latitude & longitude]"]
+                length decimal [null, note: "comprimento"]  
+                width decimal [null, note: "largura"]
                 description text
                 room int [null]
                 bathroom int [null]
@@ -51,6 +53,8 @@ return new class extends Migration
             $table->string('city');
             $table->string('province');
             $table->string('location')->nullable()->comment('[latitude & longitude]');
+            $table->decimal('length', 10, 2)->nullable()->comment('comprimento');
+            $table->decimal('width', 10, 2)->nullable()->comment('largura');
             $table->text('description')->nullable();
             $table->integer('room')->nullable();
             $table->integer('bathroom')->nullable();

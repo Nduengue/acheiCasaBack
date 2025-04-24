@@ -14,33 +14,31 @@ class PropertyFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
-    /* 
-        Modelo
-        Table property {
-            id serial [primary key]
-            user_id int [ref: > user.id]
-            category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
-            title varchar
-            type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
-            status varchar [note: "usado,novo etc"]
-            type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
-            furnished  enum("yes","no") [note: "Mobilada? Não"]
-            country varchar
-            address varchar
-            city varchar
-            province varchar
-            location array [null, note: "[latitude & longitude]"] 
-            description text
-            room int [null]
-            bathroom int [null]
-            useful_sand decimal
-            price decimal
-            announces bool [default: false]
-            favorite bool [default: false]
-            deleted bool [default: false]
-        }
-    */
+   /*  Table property {
+        id serial [primary key]
+        user_id int [ref: > user.id]
+        category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
+        title varchar
+        type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
+        status varchar [note: "usado,novo etc"]
+        type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
+        furnished  enum("yes","no") [note: "Mobilada? Não"]
+        country varchar
+        address varchar
+        city varchar
+        province varchar
+        location array [null, note: "[latitude & longitude]"]
+        length decimal [null, note: "comprimento"]  
+        width decimal [null, note: "largura"]
+        description text
+        room int [null]
+        bathroom int [null]
+        useful_sand decimal
+        price decimal
+        announces bool [default: false]
+        favorite bool [default: false]
+        deleted bool [default: false]
+      } */
     public function definition(): array
     {
         return [
@@ -55,7 +53,9 @@ class PropertyFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'province' => $this->faker->randomElement(['Icolo Bengo', 'Luanda']),
-            'location' => json_encode(["lat"=>$this->faker->latitude(),"lng" =>$this->faker->longitude()]),
+            'location' => ["lat"=>$this->faker->latitude(),"lng" =>$this->faker->longitude()],
+            'length' => $this->faker->randomFloat(2, 10, 100),
+            'width' => $this->faker->randomFloat(2, 10, 100),
             'description' => $this->faker->paragraph(),
             'room' => $this->faker->numberBetween(1, 10),
             'bathroom' => $this->faker->numberBetween(1, 10),
