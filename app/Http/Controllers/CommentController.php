@@ -51,6 +51,10 @@ class CommentController extends Controller
         if ($comment->user_id !== auth()->user()->id) {
             return response()->json(['message' => 'You are not authorized to delete this comment'], 403);
         }
+        //check if the comment is deleted
+        if ($comment->deleted) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
         $comment->update(['deleted' => true]);
 
         return response()->json(['message' => 'Comment deleted successfully']);
