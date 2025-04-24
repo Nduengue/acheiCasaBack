@@ -16,7 +16,7 @@ class CommentController extends Controller
         $comment = Comment::create([
             'user_id' => auth()->user()->id,
             'property_id' => $request->property_id,
-            'comment' => $request->comment,
+            'content' => $request->content,
         ]);
 
         return response()->json(['message' => 'Comment added successfully', 'comment' => $comment]);

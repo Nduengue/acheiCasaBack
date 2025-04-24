@@ -25,7 +25,7 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             "property_id" => "required|exists:properties,id",
-            "comment" => "required|string|max:255",
+            "content" => "required|string|max:255",
         ];
     }
     protected function failedValidation(Validator $validator)
