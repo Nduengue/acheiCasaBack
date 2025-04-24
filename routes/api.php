@@ -11,6 +11,7 @@ use App\Http\Controllers\CheckPointController;
 use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -165,6 +166,15 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\LikeController::updated()
      */
     Route::post('like/{property}', [LikeController::class, 'like'])->name('property.like');
+
+    /**
+     * Comment
+     * @see \App\Http\Controllers\CommentController
+     * @see \App\Http\Controllers\CommentController::store()
+     * @see \App\Http\Controllers\CommentController::update()
+     * @see \App\Http\Controllers\CommentController::destroy()
+     */
+    Route::apiResource('comment', CommentController::class)->only(['store', 'update', 'destroy']);
 });
 
 /**
