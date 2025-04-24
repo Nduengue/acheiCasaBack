@@ -31,8 +31,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment->scopeNotDeleted();
-            $property->like->scopeNotDeleted();
+            $property->comment()->scopeNotDeleted();
+            $property->like()->scopeNotDeleted();
             $property->user;
         });
         $data = [
@@ -70,8 +70,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment->scopeNotDeleted();
-            $property->like->scopeNotDeleted();
+            $property->comment()->scopeNotDeleted();
+            $property->like()->scopeNotDeleted();
             $property->user;
         });
         $data = [
@@ -111,8 +111,8 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
-            $property->comment->scopeNotDeleted();
-            $property->like->scopeNotDeleted();
+            $property->comment()->scopeNotDeleted();
+            $property->like()->scopeNotDeleted();
             $property->user;
         });
         $data = [
@@ -146,6 +146,9 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
+            $property->comment()->scopeNotDeleted();
+            $property->like()->scopeNotDeleted();
+            $property->user;
             $property->distance = $this->haversine(
                 request()->query('latitude'),
                 request()->query('longitude'),
