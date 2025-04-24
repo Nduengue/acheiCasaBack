@@ -26,10 +26,13 @@ class PropertyController extends Controller
                 'message' => 'No properties found'
             ], 404);
         }
+
         $properties->each(function ($property) {
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
+            $property->comment->scopeNotDeleted();
+            $property->like->scopeNotDeleted();
         });
         $data = [
             'data' => $properties

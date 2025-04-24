@@ -11,6 +11,7 @@ use App\Http\Controllers\CheckPointController;
 use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -158,6 +159,12 @@ Route::middleware('auth:sanctum')->group(function () {
      * @see \App\Http\Controllers\ComparisonController::destroy()
      */
     Route::apiResource('comparison', ComparisonController::class)->only(['index', 'store', 'destroy']);
+    /**
+     * Like
+     * @see \App\Http\Controllers\LikeController
+     * @see \App\Http\Controllers\LikeController::updated()
+     */
+    Route::post('like/{property}', [LikeController::class, 'like'])->name('property.like');
 });
 
 /**
