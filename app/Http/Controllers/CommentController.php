@@ -32,7 +32,7 @@ class CommentController extends Controller
             return response()->json(['message' => 'You are not authorized to update this comment'], 403);
         }
         $comment->update([
-            'comment' => $request->comment,
+            'content' => $request->content,
         ]);
 
         return response()->json(['message' => 'Comment updated successfully', 'comment' => $comment]);
