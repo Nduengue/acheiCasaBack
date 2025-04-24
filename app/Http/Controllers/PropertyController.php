@@ -33,6 +33,7 @@ class PropertyController extends Controller
             $property->contact;
             $property->comment->scopeNotDeleted();
             $property->like->scopeNotDeleted();
+            $property->user;
         });
         $data = [
             'data' => $properties
@@ -69,6 +70,9 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
+            $property->comment->scopeNotDeleted();
+            $property->like->scopeNotDeleted();
+            $property->user;
         });
         $data = [
             'data' => $properties
@@ -107,6 +111,9 @@ class PropertyController extends Controller
             $property->accommodationPhoto;
             $property->offer;
             $property->contact;
+            $property->comment->scopeNotDeleted();
+            $property->like->scopeNotDeleted();
+            $property->user;
         });
         $data = [
             'data' => $properties
