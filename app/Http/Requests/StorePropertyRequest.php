@@ -17,36 +17,36 @@ class StorePropertyRequest extends FormRequest
     {
         return true;
     }
-        /* 
-            Modelo
-            Table property {
-                id serial [primary key]
-                user_id int [ref: > user.id]
-                category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
-                title varchar
-                type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
-                status varchar [note: "usado,novo etc"]
-                type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
-                furnished  enum("yes","no") [note: "Mobilada? Não"]
-                country varchar
-                address varchar
-                city varchar
-                province varchar
-                location array [null, note: "[latitude & longitude]"]
-                length decimal [null, note: "comprimento"]  
-                width decimal [null, note: "largura"]
-                description text
-                room int [null]
-                bathroom int [null]
-                useful_sand decimal
-                announces bool [default: false]
-                favorite bool [default: false]
-                deleted bool [default: false]
-                time_unit enum("second","minute","hours","day","week","month","year") [null]
-                minimum_time decimal [null]
-                price decimal
-            }
-        */
+    /*  Modelo
+        Table property {
+            id serial [primary key]
+            user_id int [ref: > user.id]
+            category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
+            agency_id int [ref: > agency.id, null]
+            title varchar
+            type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
+            status varchar [note: "usado,novo etc"]
+            type_of_business enum("A","V") [note: "A - Alugar  V - Venda"]
+            furnished  enum("yes","no") [note: "Mobilada? Não"]
+            country varchar
+            address varchar
+            city varchar
+            province varchar
+            location array [null, note: "[latitude & longitude]"]
+            length decimal [null, note: "comprimento"]  
+            width decimal [null, note: "largura"]
+            description text
+            room int [null]
+            bathroom int [null]
+            useful_sand decimal
+            announces bool [default: false]
+            favorite bool [default: false]
+            deleted bool [default: false]
+            time_unit enum("second","minute","hours","day","week","month","year") [null]
+            minimum_time decimal [null]
+            price decimal
+        }
+    */
 
     /**
      * Get the validation rules that apply to the request.
@@ -58,6 +58,7 @@ class StorePropertyRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'category_id' => 'required|string|in:Praia,Armazem,Loja,Terreno,Residencial,Escritorios,Quartos',
+            'agency_id' => 'nullable|exists:agencies,id',
             'title' => 'required|string|max:255',
             'type' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
@@ -73,7 +74,6 @@ class StorePropertyRequest extends FormRequest
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',
-            'useful_sand' => 'required_if:category_id,Terreno|string|max:255',
             'contact'=>'required',
             'photo'=> 'required|array',
             'photo.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',

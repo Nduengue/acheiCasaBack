@@ -43,7 +43,6 @@ class UpdatePropertyRequest extends FormRequest
             'description' => 'nullable|string',
             'room' => 'nullable|integer|min:0',
             'bathroom' => 'nullable|integer|min:0',
-            'useful_sand' => 'required_if:category_id,Terreno|string|max:255',
             'contact'=>'nullable',
             'photo'=> 'nullable|array',
             'photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

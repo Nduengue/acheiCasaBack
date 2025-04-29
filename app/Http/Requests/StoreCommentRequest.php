@@ -25,6 +25,7 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             "property_id" => "required|exists:properties,id",
+            "stars" => "required|integer|between:0,5",
             "content" => "required|string|max:255",
         ];
     }

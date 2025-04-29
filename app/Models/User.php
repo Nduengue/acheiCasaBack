@@ -108,6 +108,11 @@ class User extends Authenticatable
 
         return $this->hasMany(PaymentReceipt::class);
     }
+    public function agencyUsers()
+    {
+        return $this->hasMany(AgencyUser::class);
+    }
+
     
 
 }

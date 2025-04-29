@@ -16,6 +16,7 @@ class CommentController extends Controller
         $comment = Comment::create([
             'user_id' => auth()->user()->id,
             'property_id' => $request->property_id,
+            'stars' => $request->stars,
             'content' => $request->content,
         ]);
 
@@ -37,6 +38,7 @@ class CommentController extends Controller
         }
         $comment->update([
             'content' => $request->content,
+            'stars' => $request->stars,
         ]);
 
         return response()->json(['message' => 'Comment updated successfully', 'comment' => $comment]);

@@ -13,6 +13,7 @@ return new class extends Migration
         id serial [primary key]
         user_id int [ref: > user.id]
         property_id int [ref: > property.id]
+        stars int [note: "de 1 a 5 estrelas"]
         content text
         deleted bool [default: false]
     } */
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('property_id')->constrained()->onDelete('cascade');
+            $table->integer('stars')->default(0)->comment('de 1 a 5 estrelas');
             $table->text('content');
             $table->boolean('deleted')->default(false);
             $table->timestamps();

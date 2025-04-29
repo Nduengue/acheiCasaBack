@@ -24,6 +24,7 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "stars" => "required|integer|between:0,5",
             "content"=>"required|string|max:255",
         ];
     }

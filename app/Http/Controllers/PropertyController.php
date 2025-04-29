@@ -7,6 +7,7 @@ use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\Notice;
 
 class PropertyController extends Controller
 {
@@ -35,6 +36,52 @@ class PropertyController extends Controller
             $property->likes = $property->like()->where("deleted", false)->get();
             $property->user;
         });
+        $data = [
+            'data' => $properties
+        ];
+        return response()->json($data, 200);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function agency()
+    {
+        $page = request()->query('page', 1);
+        // Check if Call to a member function contains() on null
+        if (empty(Auth::user()->agencyUsers)) {
+            return response()->json([
+                'message' => 'Agency not found'
+            ], 404);
+        }
+       
+        // Get the properties for the authenticated user
+        if(request('agency_id') == null){
+            $properties = Property::where('deleted', false)
+                ->where('user_id', Auth::id())
+                ->where('agency_id', Auth::user()->agencyUsers->pluck('agency_id'))
+                ->get();
+        }else{
+           $properties = Property::where('deleted', false)
+                    ->whereIn('agency_id',Auth::user()->agencyUsers->pluck('agency_id'))
+                    ->where('agency_id', request()->query('agency_id'))
+                    ->get();
+        }
+        if ($properties->isEmpty()) {
+            return response()->json([
+                'message' => 'No properties found'
+            ], 404);
+        }
+        // Check if the agency has any properties
+        $properties->each(function ($property) {
+            $property->accommodationPhoto;
+            $property->offer;
+            $property->contact;
+            $property->comments = $property->comment()->where('deleted', false)->get();
+            $property->likes = $property->like()->where("deleted", false)->get();
+            $property->user;
+        });
+    
         $data = [
             'data' => $properties
         ];
@@ -205,6 +252,19 @@ class PropertyController extends Controller
         if ($request->has('contact')) {
             $property->contact()->createMany($request->input('contact'));
         }
+        // if $request->agency_id is not null notifcation to the all agencyUsers
+        if ($request->agency_id != null) {
+            $agencyUsers = Auth::user()->agencyUsers->where('agency_id', $request->agency_id);
+            foreach ($agencyUsers as $agencyUser) {
+                $agencyUser->user->notify(new Notice(
+                    'Criação de Anúncio',
+                    'Sua agência criou um novo anúncio.',
+                    route('property.show', $property->id),
+                    "GET",
+                    "link"
+                ));
+            }  
+        }
         $property->load('offer');
         $property->load('accommodationPhoto');
         $property->load('contact');
@@ -220,7 +280,46 @@ class PropertyController extends Controller
      */
     public function show($property)
     {
-        $property = Property::find($property->id);
+        $property = Property::find($property);
+        // Check if the property exists
+        $property->load('offer');
+        $property->load('accommodationPhoto');
+        $property->load('contact');
+        $property->load('comment');
+        $property->comments = $property->comment()->where('deleted', false)->get();
+        $property->likes = $property->like()->where("deleted", false)->get();
+        // like count
+        $property->likeCount = $property->like()->where("deleted", false)->count();
+        $property->load('user');
+        $property->load('checkPoint');
+        if ($property) {
+            return response()->json([
+                'data' => $property
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Property not found'
+            ], 404);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function detail($property)
+    {
+        $property = Property::find($property);
+        // Check if the property exists
+        $property->load('offer');
+        $property->load('accommodationPhoto');
+        $property->load('contact');
+        $property->load('comment');
+        $property->comments = $property->comment()->where('deleted', false)->get();
+        $property->likes = $property->like()->where("deleted", false)->get();
+        // like count
+        $property->likeCount = $property->like()->where("deleted", false)->count();
+        $property->load('user');
+        $property->load('checkPoint');
         if ($property) {
             return response()->json([
                 'data' => $property

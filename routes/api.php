@@ -81,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::apiResource('property',PropertyController::class)->only(['index', 'store', 'show','destroy']);
     Route::post('property/{property}', [PropertyController::class, 'update'])->name('property.update');
+    /** group of agency - property */
+    Route::get('property-agency', [PropertyController::class, 'agency'])->name('property.agency');
     
     
     /**
@@ -177,12 +179,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('comment', CommentController::class)->only(['store', 'update', 'destroy']);
 });
 
+Route::get('property', [PropertyController::class, 'index'])->name('property.index');
+Route::get('property/{property}', [PropertyController::class, 'show'])->name('property.show');
 /**
  * Route * Public *
 * @see \App\Http\Controllers\PropertyController
 * @see \App\Http\Controllers\PropertyController::all()
 * @see \App\Http\Controllers\PropertyController::base()
+* @see \App\Http\Controllers\PropertyController::show()
 */
 Route::get('base', [PropertyController::class, 'base'])->name('property.all');
 Route::get('all', [PropertyController::class, 'all'])->name('property.all');
+Route::get('detail/{property}', [PropertyController::class, 'detail'])->name('property.show');
 Route::match(['get', 'post'], '/webhook', [WebhookController::class, 'handle']);

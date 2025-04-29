@@ -14,6 +14,7 @@ class Property extends Model
             id serial [primary key]
             user_id int [ref: > user.id]
             category_id enum("Praia", "Reserva", "Loja", "Terreno", "Residencial", "Escritorio", "Quartos","Armazem")
+            agency_id int [ref: > agency.id, null]
             title varchar
             type varchar [null, note: "Casa, Apartamento, Armazem, Loja, Terreno, ..."]
             status varchar [note: "usado,novo etc"]
@@ -42,6 +43,7 @@ class Property extends Model
     protected $fillable = [
         'user_id',
         'category_id',
+        'agency_id',
         'title',
         'type',
         'status',
