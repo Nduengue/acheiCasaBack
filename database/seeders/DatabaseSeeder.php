@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'marcelomj1978@gmail.com',
         ]);
         
-        User::factory()->create([
+       /*  User::factory()->create([
             'first_name' => 'Manuel',
             'last_name' => 'Cardoso',
             'email' => 'manuelcardosomasc@gmail.com',
-        ]);
+        ]); */
 
         OfferOption::factory()->create([
             'icon' => 'https://example.com/icon.png',
