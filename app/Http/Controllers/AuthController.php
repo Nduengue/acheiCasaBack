@@ -67,6 +67,22 @@ class AuthController extends Controller
                 'message' => 'User not authenticated'
             ], 401);
         }
+        // Verifica se o email já existe
+        $email = User::where('email', $request->email)->where('id', '!=', $user->id)->first();
+        if ($email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email already exists'
+            ], 422);
+        }
+        // Verifica se o telefone já existe
+        $phone = User::where('phone_number', $request->phone_number)->where('id', '!=', $user->id)->first();
+        if ($phone) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Phone number already exists'
+            ], 422);
+        }
         $user->update($request->validated());
         $user->load("document");
         return response()->json([
