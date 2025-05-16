@@ -67,6 +67,8 @@ class AuthController extends Controller
                 'message' => 'User not authenticated'
             ], 401);
         }
+        $user->update($request->validated());
+        $user->load("document");
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
