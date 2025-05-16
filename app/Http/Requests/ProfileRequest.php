@@ -29,6 +29,11 @@ class ProfileRequest extends FormRequest
             "birthdate" => "required|date",
             "gender" => "required|in:M,F",
             "biography" => "required|string|max:255",
+            /* address */
+            "province" => "nullable|string|max:255",
+            "country" => "nullable|string|max:255",
+            "municipality" => "nullable|string|max:255",
+            "postal_code" => "nullable|string|max:255",
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)

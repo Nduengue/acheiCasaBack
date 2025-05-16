@@ -72,7 +72,6 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::get('me', [AuthController::class, "me"])->name("me");
     Route::put('profile', [AuthController::class, "profile"])->name("profile");
-    Route::put('address', [AuthController::class, "address"])->name("address");
     Route::post('upload', [AuthController::class, "upload"])->name("upload");
     
     /**

@@ -52,6 +52,7 @@ class AuthController extends Controller
                 'message' => 'User not authenticated'
             ], 401);
         }
+        $user->load("document");
         return response()->json([
             'success' => true,
             'data' => $user,
@@ -66,15 +67,6 @@ class AuthController extends Controller
                 'message' => 'User not authenticated'
             ], 401);
         }
-        // uploda de imagem
-        if ($request->hasFile('path_photo')) {
-            $path = $request->file('path_photo')->store('photo', 'public');
-            $user->path_photo = $path;
-        }
-        $user->update(array_merge($request->validated(), [
-            'path_photo' => $path ?? $user->path_photo,
-        ]));
-
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
@@ -106,24 +98,6 @@ class AuthController extends Controller
         ]);
     }
 
-    public function address(AddressRequest $request){
-        $user = Auth::user();
-        
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not authenticated'
-            ], 401);
-        }
-
-        $user->update($request->validated());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully',
-            'data' => $user,
-        ]);
-    }
 
     /**
      * Display the specified resource.
